@@ -127,7 +127,7 @@ function init() {
     popup.startup();
 
     $('#fopcion').change(function () {
-        if ($('#fopcion')[0].value == "Oferta Inmobiliaria") {
+        if ($('#fopcion')[0].value == "oferta") {
             $('#foferta').show();
             $("#reportar").popup("reposition", { positionTo: 'window' });
         } else {
@@ -199,13 +199,13 @@ function updateRadius(val) {
 function share(id) {
     switch (id){
         case 'facebook':
-            window.open('http://www.facebook.com/sharer.php?t=Encontre este lugar en Vivi&u=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1');
+            window.open('http://www.facebook.com/sharer.php?t=Encontre este lugar en Vivi&u=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_blank', '');
             break;
         case 'twitter':
-            window.open('https://twitter.com/intent/tweet?text=Encontre este lugar en Vivi&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1');
+            window.open('https://twitter.com/intent/tweet?text=Encontre este lugar en Vivi&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_blank', '');
             break;
         case 'email':
-            window.open('mailto:?subject=Encontre este lugar en Vivi&body=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_system');
+            window.open('mailto:?subject=Encontre este lugar en Vivi&body=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_system', '');
             break;          
     }
 }
