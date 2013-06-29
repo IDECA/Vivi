@@ -199,14 +199,17 @@ function updateRadius(val) {
 function share(id) {
     switch (id){
         case 'facebook':
-            window.open('http://www.facebook.com/sharer.php?t=Encontre este lugar en Vivi&u=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_blank', '');
+            //window.open('http://www.facebook.com/sharer.php?t=Encontre este lugar en Vivi&u=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_blank', '');
+            window.open('http://www.facebook.com', '_blank', '');
             break;
         case 'twitter':
-            window.open('https://twitter.com/intent/tweet?text=Encontre este lugar en Vivi&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_blank', '');
+            //window.open('https://twitter.com/intent/tweet?text=Encontre este lugar en Vivi&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_blank', '');
+            window.open('http://www.twitter.com', '_blank', 'location=yes');
             break;
         case 'email':
-            window.open('mailto:?subject=Encontre este lugar en Vivi&body=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_system', '');
-            break;          
+            //window.open('mailto:?subject=Encontre este lugar en Vivi&body=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_system', '');
+            window.open('https://twitter.com/intent/tweet?text=Encontre este lugar en Vivi&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_blank', 'location=yes');
+            break;
     }
 }
 
