@@ -3,7 +3,7 @@
 PARAMETROS CONFIGURABLES
 
 */
-var _url = 'http://http://184.72.38.228/Vivi/';
+var _url = 'http://184.72.38.228/Vivi/';
 var _url_photo = 'http://metadatos.ideca.gov.co/geoportal/vivi/upload_test.jsp';
 var _url_msg = 'http://metadatos.ideca.gov.co/geoportal/vivi/test.jsp';
 var variables = [
@@ -199,16 +199,13 @@ function updateRadius(val) {
 function share(id) {
     switch (id){
         case 'facebook':
-            //window.open('http://www.facebook.com/sharer.php?t=Encontre este lugar en Vivi&u=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_blank', '');
-            window.open('http://www.facebook.com', '_blank', '');
+            window.open(encodeURI('http://www.facebook.com/sharer.php?t=Encontre este lugar en Vivi&u=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1'), '_blank', '');
             break;
         case 'twitter':
-            //window.open('https://twitter.com/intent/tweet?text=Encontre este lugar en Vivi&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_blank', '');
-            window.open('http://www.twitter.com', '_blank', 'location=yes');
+            window.open(encodeURI('https://twitter.com/intent/tweet?text=Encontre este lugar en Vivi&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1'), '_blank', '');
             break;
         case 'email':
-            //window.open('mailto:?subject=Encontre este lugar en Vivi&body=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_system', '');
-            window.open('https://twitter.com/intent/tweet?text=Encontre este lugar en Vivi&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_blank', 'location=yes');
+            window.open('mailto:subject=Encontre este lugar en Vivi&body=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_system', '');
             break;
     }
 }
