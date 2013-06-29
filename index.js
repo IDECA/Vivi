@@ -126,6 +126,16 @@ function init() {
     popup = new esri.dijit.InfoWindowLite(null, dojo.create("div"));
     popup.startup();
 
+    $('#fopcion').change(function () {
+        if ($('#fopcion')[0].value == "Oferta Inmobiliaria") {
+            $('#foferta').show();
+            $("#reportar").popup("reposition", { positionTo: 'window' });
+        } else {
+            $('#foferta').hide();
+            $("#reportar").popup("reposition", { positionTo: 'window' });
+        };
+    });
+
     var ua = navigator.userAgent;
     if (isTouchDevice() && (ua.match(/(iPhone|iPod|iPad)/) || ua.match(/Android/))) {
 
@@ -189,10 +199,10 @@ function updateRadius(val) {
 function share(id) {
     switch (id){
         case 'facebook':
-            window.open('http://www.facebook.com/sharer.php?t=Encontre este lugar en Vivi&u=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_blank');
+            window.open('http://www.facebook.com/sharer.php?t=Encontre este lugar en Vivi&u=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1');
             break;
         case 'twitter':
-            window.open('https://twitter.com/intent/tweet?text=Encontre este lugar en Vivi&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_blank');
+            window.open('https://twitter.com/intent/tweet?text=Encontre este lugar en Vivi&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1');
             break;
         case 'email':
             window.open('mailto:?subject=Encontre este lugar en Vivi&body=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_system');
