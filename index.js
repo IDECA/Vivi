@@ -3,7 +3,8 @@
 PARAMETROS CONFIGURABLES
 
 */
-var _url = 'http://184.72.38.228/Vivi/';
+var _url = 'http://ec2-184-72-38-228.us-west-1.compute.amazonaws.com/Vivi/';
+var _msg_share = 'Encontre este lugar en la aplicación Tu Bogotá';
 var _url_photo = 'http://metadatos.ideca.gov.co/geoportal/vivi/upload_test.jsp';
 var _url_msg = 'http://metadatos.ideca.gov.co/geoportal/vivi/test.jsp';
 var variables = [
@@ -63,11 +64,9 @@ var urls = [
     "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Educacion/MapServer",
     "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Infraestructura_de_Seguridad/MapServer",
     "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Integracion_Social/MapServer",
-    "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Movilidad/MapServer",
     "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Sistema_de_Movilidad/MapServer",
     "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Riesgo/MapServer",
-    "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Corredores_Comerciales/MapServer",
-    "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Establecimientos_Comerciales/MapServer"
+    "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Corredores_Comerciales/MapServer"
 ];
 var layers = [
         [4],
@@ -81,10 +80,8 @@ var layers = [
         [0, 1, 2, 3, 4, 5],
         [0],
         [0, 1, 2, 3, 4, 5, 6],
-        [0, 5, 6],
         [0, 1, 2, 3],
         [0, 1, 2, 3],
-        [0],
         [0]
 ];
 var valoraciones = [
@@ -137,7 +134,7 @@ function init() {
     });
 
     var ua = navigator.userAgent;
-    if (isTouchDevice() && (ua.match(/(iPhone|iPod|iPad)/) || ua.match(/Android/))) {
+    if (isPhoneGap()) {
 
         touchScroll("lista");
         map = new esri.Map("map", {
@@ -147,6 +144,7 @@ function init() {
         });
 
         $("#fphoto").show();
+        $("#fphotoweb").hide();
 
         dojo.connect(map, "onLoad", mapLoadHandler);
         dojo.connect(map, "onDblClick", mapClickHandler);
@@ -157,7 +155,28 @@ function init() {
             infoWindow: popup,
             autoResize: true
         });
+
         $("#fphoto").hide();
+        $("#fphotoweb").show();
+        $("form#data").submit(function () {
+            var formData = new FormData($(this)[0]);
+
+            $.ajax({
+                url: _url_photo,
+                type: 'POST',
+                data: formData,
+                async: false,
+                success: function (data) {
+                    alert(data)
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+            return false;
+        });
+
         dojo.connect(map, "onLoad", mapLoadHandler);
         dojo.connect(map, "onClick", mapClickHandler);
     };
@@ -196,16 +215,20 @@ function updateRadius(val) {
     radius = val;
 }
 
+function cerrarPopup() {
+    popup.hide();
+};
+
 function share(id) {
     switch (id){
         case 'facebook':
-            window.open(encodeURI('http://www.facebook.com/sharer.php?t=Encontre este lugar en Vivi&u=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1'), '_blank', '');
+            window.open(encodeURI('http://www.facebook.com/sharer.php?t=' + _msg_share + '&u=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1'), '_blank', '');
             break;
         case 'twitter':
-            window.open(encodeURI('https://twitter.com/intent/tweet?text=Encontre este lugar en Vivi&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1'), '_blank', '');
+            window.open(encodeURI('https://twitter.com/intent/tweet?text=' + _msg_share + '&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1'), '_blank', '');
             break;
         case 'email':
-            window.open('mailto:subject=Encontre este lugar en Vivi&body=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1', '_system', '');
+            window.open('mailto:?subject=Encontre este lugar en Vivi&body=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '&d=1', '_system', '');
             break;
     }
 }
@@ -230,24 +253,29 @@ function mapLoadHandler(map) {
         capas.push(glT);
     };
 
-    /*
-    if (navigator.geolocation){  
-           navigator.geolocation.getCurrentPosition(zoomToLocation, locationError);
-        }
-    */
-
     if (getUrlVars()["pos"] != null) {        
         var obj = {};
         obj.mapPoint = new esri.geometry.Point(parseFloat(getUrlVars()["pos"].split(";")[0]), parseFloat(getUrlVars()["pos"].split(";")[1]), map.spatialReference);
         map.centerAndZoom(obj.mapPoint, 5);
         mapClickHandler(obj);
     } else {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(zoomToLocation, null);
+        }
         map.centerAndZoom(new esri.geometry.Point(-74.075833, 4.598056, map.spatialReference), 5);
         currentPoint = new esri.geometry.Point(-74.075833, 4.598056, map.spatialReference);
     }
 
-
 }
+
+function zoomToLocation(position) {
+    try {
+        currentPoint = new esri.geometry.Point(position.coords.longitude, position.coords.latitude, map.spatialReference);
+        map.centerAndZoom(new esri.geometry.Point(position.coords.longitude, position.coords.latitude, map.spatialReference), 5);
+    } catch (ex) {
+       
+    }
+};
 
 function showLayer(pos) {
     map.infoWindow.hide();
@@ -325,7 +353,8 @@ function showBuffer2(geometries) {
             identifyParams.spatialReference = map.spatialReference;
             identifyParams.mapExtent = currentExtent.getExtent();
             if (i == 0) {
-                identifyParams.geometry = currentPoint;
+                identifyParams.geometry = currentExtent.getExtent();
+                //identifyParams.geometry = currentPoint;
             } else {
                 identifyParams.geometry = currentExtent.getExtent();
             }
@@ -399,29 +428,15 @@ function showBuffer2(geometries) {
                     break;
                 case 12:
                     identifyTask.execute(identifyParams, function (results) {
-                        showResults(results, 10);
+                        showResults(results, 11);
                     });
                     break;
                 case 13:
                     identifyTask.execute(identifyParams, function (results) {
-                        showResults(results, 11);
-                    });
-                    break;
-                case 14:
-                    identifyTask.execute(identifyParams, function (results) {
-                        showResults(results, 12);
-                    });
-                    break;
-                case 15:
-                    identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 5);
                     });
                     break;
-                case 16:
-                    identifyTask.execute(identifyParams, function (results) {
-                        showResults(results, 5);
-                    });
-                    break;
+
             }
         };
 
@@ -455,96 +470,100 @@ function showResults(results, pos) {
 
     for (var i = 0, il = results.length; i < il; i++) {
         var value = "N/A";
-        var content = "X";
+        var content = pos;
 
         try {
-            for (var key in results[i].feature.attributes) {
-                if (key.toString().toLowerCase().indexOf("nombre") != -1) {
-                    value = results[i].feature.attributes[key];
-                }
-            }
             switch (pos) {
                 case 0:
-                    content = results[i].feature.attributes["Valor metro cuadrado"];
+                    value = results[i].feature.attributes["Valor metro cuadrado"];
+                    content = "&nbsp;"
                     break;
                 case 1:
-                    content = "Nombre: " + results[i].feature.attributes["Nombre"];
+                    value = results[i].feature.attributes["Nombre"];
+                    content = "&nbsp;"
                     break;
                 case 2:
                     if (results[i].layerId != 18) {
-                        content = "Nombre: " + results[i].feature.attributes["Nombre"] + "<br />" +
-                                  "Tipología: " + results[i].feature.attributes["Tipologia"];
+                        value = results[i].feature.attributes["Nombre"];
+                        content = results[i].feature.attributes["Tipologia"];
                     } else {
-                        content = "Nombre: " + results[i].feature.attributes["Nombre"] + "<br />" +
-                                  "Telefono: " + results[i].feature.attributes["Telefono"];
+                        value = results[i].feature.attributes["Nombre"];
+                        content = "Teléfono: " + results[i].feature.attributes["Telefono"];
                     }
                     break;
                 case 3:
-                    content = "Nombre: " + results[i].feature.attributes["Nombre"] + "<br />" +
-                                  "Tipología: " + results[i].feature.attributes["Tipologia"];
+                    value = results[i].feature.attributes["Nombre"];
+                    content = results[i].feature.attributes["Tipologia"];
                     break;
                 case 4:
                     if (results[i].layerId != 6) {
-                        content = "Nombre: " + results[i].feature.attributes["Nombre"] + "<br />" +
-                                  "Tipología: " + results[i].feature.attributes["Tipologia"];
+                        value = results[i].feature.attributes["Nombre"];
+                        content = results[i].feature.attributes["Tipologia"];
                     } else {
-                        content = "Nombre: " + results[i].feature.attributes["Nombre de la biblioteca"];
+                        value = results[i].feature.attributes["Nombre de la biblioteca"];
+                        content = "&nbsp;";
                     }
                     break;
                 case 5:
                     if (results[i].feature.attributes["Nombre"] != null) {
-                        content = "Nombre: " + results[i].feature.attributes["Nombre"] + "<br />" +
-                                "Tipología: " + results[i].feature.attributes["Tipologia"];
+                        value = results[i].feature.attributes["Nombre"];
+                        content = results[i].feature.attributes["Tipologia"];
                     }
                     if (results[i].feature.attributes["Nombre del Establecimiento"] != null) {
-                        content = "Nombre: " + results[i].feature.attributes["Nombre del Establecimiento"];
+                        value = results[i].feature.attributes["Nombre del Establecimiento"];
+                        content = "&nbsp;";
                     }
                     break;
                 case 6:
                     if (results[i].layerId == 0) {
-                        content = "Nombre: " + results[i].feature.attributes["Nombre"];
+                        value = results[i].feature.attributes["Nombre"];
+                        content = "&nbsp;";
                     }
                     if (results[i].layerId == 1) {
-                        content = "Nombre: " + results[i].feature.attributes["Razón Social"];
+                        value = results[i].feature.attributes["Razón Social"];
+                        content = "&nbsp;";
                     }
                     if (results[i].layerId == 13) {
-                        content = "Nombre: " + results[i].feature.attributes["Nombre de la Sede"];
+                        value = results[i].feature.attributes["Nombre de la Sede"];
+                        content = "&nbsp;";
                     }
                     break;
                 case 7:
                     if (results[i].layerId != 5) {
-                        content = "Nombre: " + results[i].feature.attributes["Nombre del establecimiento educativo"];
+                        value = results[i].feature.attributes["Nombre del establecimiento educativo"];
+                        content = "&nbsp;";
                     } else {
-                        content = "Nombre: " + results[i].feature.attributes["Institucion"] + "<br />" +
-                                  "Carácter: " + results[i].feature.attributes["Caracter"];
+                        value = results[i].feature.attributes["Institucion"];
+                        content = results[i].feature.attributes["Caracter"];
                     }
                     break;
                 case 8:
-                    content = "Nombre: " + results[i].feature.attributes["Nombre"] + "<br />" +
-                              "Telefono: " + results[i].feature.attributes["Teléfono"];
+                    value = results[i].feature.attributes["Nombre"];
+                    content = "Teléfono: " + results[i].feature.attributes["Teléfono"];
                     break;
                 case 9:
-                    content = "Nombre: " + results[i].feature.attributes["Nombre Unidad Operativa"] + "<br />" +
-                              "Categoría: " + results[i].feature.attributes["Categoria"];
+                    value = results[i].feature.attributes["Nombre Unidad Operativa"];
+                    content = results[i].feature.attributes["Categoria"];
                     break;
                 case 10:
                     content = "";
                     break;
                 case 11:
                     if (results[i].layerId == 0) {
-                        content = "Área de amenaza: " + results[i].feature.attributes["Área de la amenaza"] + "<br />" +
-                                  "Categoría: " + results[i].feature.attributes["Categoría"];
+                        value = "Riesgo de Inundación";
+                        content = "&nbsp;";
                     }
                     if (results[i].layerId == 1) {
-                        content = "Razón social: " + results[i].feature.attributes["Razón social"] + "<br />" +
-                                  "Tipo de amenaza: " + results[i].feature.attributes["Tipo de la amenaza"];
+                        value = "Riesgo Tecnológico";
+                        content = results[i].feature.attributes["Razón social"];
                     }
                     if (results[i].layerId == 2) {
-                        content = "Área de amenaza: " + results[i].feature.attributes["Área de la amenaza"] + "<br />" +
-                                  "Categoría: " + results[i].feature.attributes["Categoría"];
+                        value = "Riesgo de Remoción";
+                        content = "&nbsp;";
                     }
                     if (results[i].layerId == 3) {
-                        content = "Categoría: " + results[i].feature.attributes["Categoría de la amenaza"];
+                        value = "Riesgo de Incedio forestal";
+                        content = "&nbsp;";
                     }
 
                     break;
@@ -555,6 +574,7 @@ function showResults(results, pos) {
         } catch (e) {
             
         };
+        content = content + "<br /><a href='#' onclick='cerrarPopup();' style='position: absolute;right: 5px;bottom: 5px;'>Cerrar</a>";
         switch (results[i].feature.geometry.type) {
             case "point":
                 capas[pos].add(new esri.Graphic(results[i].feature.geometry,
@@ -603,8 +623,10 @@ function showResults(results, pos) {
 
 
         if (pos == 0) {
-            m2 = m2 + parseInt(results[0].feature.attributes["Valor metro cuadrado"].replace("$", "").replace(".", "").replace(",", "").replace(".", ""));
-            nm2++;
+            if (nm2 == 0) {
+                m2 = m2 + parseInt(results[0].feature.attributes["Valor metro cuadrado"].replace("$", "").replace(".", "").replace(",", "").replace(".", ""));
+                nm2++;
+            }            
         }
     }
 
@@ -762,8 +784,9 @@ function enviar_msg() {
         url: _url_msg + '?categoria=' + $('#fopcion')[0].value + '&Descripcion=' + $('#fdescripcion')[0].value
                       + ';Latitud=' + currentPoint.x + ';Longitud=' + currentPoint.y + '&Foto=' + photoMSG
                       + '&Tipo=' + $('#ftipo')[0].value + '&Valor=' + $('#fvalor')[0].value
-                      + '&Telefono=' + $('#ftelefono')[0].value + '&Direccion=' + $('#fdireccion')[0].value,
-        type: 'post',
+                      + '&Telefono=' + $('#ftelefono')[0].value + '&Direccion=' + $('#fdireccion')[0].value
+                      + '&Correo=' + $('#fcorreo')[0].value,
+        type: 'GET',
         success: function () {
             $('#reportar').popup('close');
             $('#msgTXT').html('Mensaje enviado exitosamente.');            
@@ -776,3 +799,13 @@ function enviar_msg() {
         }
     });
 };
+
+function isPhoneGap() {
+    try {
+        return (cordova || PhoneGap || phonegap)
+        && /^file:\/{3}[^\/]/i.test(window.location.href)
+        && /ios|iphone|ipod|ipad|android/i.test(navigator.userAgent);
+    } catch (err) {
+        return false;
+    }
+}

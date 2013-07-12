@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Vivi</title>
+    <title>Tu Bogotá</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta property="og:title" content="Vivi" />
-    <meta property="og:description" content="Vivi es una aplicación que permite facilitar la toma de decisiones para la compra de Vivienda en Bogotá" />
+    <meta property="og:title" content="Tu Bogotá" />
+    <meta property="og:description" content="Tu Bogotá es una aplicación que permite facilitar la toma de decisiones para la compra de Vivienda en Bogotá" />
     <meta property="og:image" content="http://184.72.38.228/Vivi/icon.png" />
     
     <link href="css/jquery.mobile-1.3.1.min.css" rel="stylesheet" />
@@ -15,14 +15,23 @@
 
 	<script src="js/jquery.js"></script>
     <script src="js/jquery.mobile-1.3.1.js"></script>
+    <script src="js/jquery.form.min.js"></script>
     <script src="js/json2.js"></script>
+
     <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5compact/"></script>
     <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/claro/claro.css" />
     <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css"/>
 
     <script src="index.js"></script>
     <script src="phonegap.js"></script>
-    <!-- <script type="text/javascript" src="http://debug.phonegap.com/target/target-script-min.js#91a47b4e-ce2a-11e2-b4a9-12313d16b935"></script> -->
+
+    <style>
+        .simpleInfoWindow .close
+        {
+            display: none;
+        }
+
+    </style>
 
 	<script>
 	    dojo.require("esri.map");
@@ -56,12 +65,12 @@
             <div data-role="popup" id="acerca">
 	            <div data-role="header">
                     <a href="#main" data-role="button" data-icon="arrow-l">Volver</a>
-		            <h1>Vivi</h1>            
+		            <h1>Tu Bogotá</h1>            
 	            </div>
 	            <div data-role="content">
                    <p style="text-align: center;">
-                       <span style="font-size: large;"><b>Vivi v1.0</b></span><br />
-                       ideca - Infraestructura de Datos Espaciales para el Distrito Capital<br />
+                       <span style="font-size: large;"><b>Tu Bogotá v1.0</b></span><br />
+                       IDECA - Infraestructura de Datos Espaciales para el Distrito Capital<br />
                        2013 - Derechos Reservados<br />
                        <span style="font-size: small;">Tenga en cuenta que esta aplicación requiere acceso a internet y puede consumir recursos de su plan de datos</span>
                    </p>
@@ -81,14 +90,14 @@
             <div data-role="popup" id="share">
 	            <div data-role="header">
                     <a href="#main" data-role="button" data-icon="arrow-l">Volver</a>
-		            <h1>Vivi</h1>            
+		            <h1>Tu Bogotá</h1>            
 	            </div>
 	            <div data-role="content">
-                   <p style="text-align: center;">Compartir ubicación por:&nbsp;&nbsp;&nbsp;</p>
+                   <p style="text-align: center;">Compartir ubicación por:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                     <div data-role="controlgroup" data-type="vertical">
                         <a href="#" id="btnS1" data-role="button" data-icon="facebook" data-mini="true" onclick="share('facebook');">Facebook</a>
                         <a href="#" id="btnS2" data-role="button" data-icon="twitter" data-mini="true" onclick="share('twitter');">Twitter</a>
-                        <a href="#" id="btnS3" data-role="button" data-icon="email" data-mini="true" onclick="share('email');">E-mail</a>
+                        <!-- <a href="#" id="btnS3" data-role="button" data-icon="email" data-mini="true" onclick="share('email');">E-mail</a> -->
                     </div>
 	            </div>
             </div>
@@ -96,10 +105,10 @@
             <div data-role="popup" id="configuracion">
 	            <div data-role="header">
                     <a href="#main" data-role="button" data-icon="arrow-l">Volver</a>
-		            <h1>Vivi</h1>            
+		            <h1>Tu Bogotá</h1>            
 	            </div>
 	            <div data-role="content">
-                   <p style="text-align: center;">Radio de busqueda:</p>
+                   <p style="text-align: center;">Radio de busqueda:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                     <div data-role="controlgroup" data-type="horizontal">
                         <a href="#" id="btn1" data-role="button" data-inline="true" data-mini="true" onclick="$('#btn1,#btn2,#btn4').removeClass('ui-btn-active');updateRadius(1);$('#btn1').addClass('ui-btn-active');">1 Km.</a>
                         <a href="#" id="btn2" data-role="button" data-inline="true" data-mini="true" onclick="$('#btn1,#btn2,#btn4').removeClass('ui-btn-active');updateRadius(2);$('#btn2').addClass('ui-btn-active');" class="ui-btn-active">2 Kms.</a>
@@ -111,7 +120,7 @@
             <div data-role="popup" id="msg">
 	            <div data-role="header">
                     <a href="#main" data-role="button" data-icon="arrow-l">Volver</a>
-		            <h1>Vivi</h1>            
+		            <h1>Tu Bogotá</h1>            
 	            </div>
 	            <div data-role="content">
                     <div id="msgTXT"></div>
@@ -121,7 +130,7 @@
             <div data-role="popup" id="msg2">
 	            <div data-role="header">
                     <a href="#" data-role="button" data-icon="arrow-l" onclick="$('#msg2').popup('close');$('#reportar').popup('open');">Volver</a>
-		            <h1>Vivi</h1>            
+		            <h1>Tu Bogotá</h1>            
 	            </div>
 	            <div data-role="content">
                     <div id="msgTXT2"></div>
@@ -131,43 +140,55 @@
             <div data-role="popup" id="reportar">
 	            <div data-role="header">
                     <a href="#main" data-role="button" data-icon="arrow-l">Volver</a>
-		            <h1>Vivi</h1>            
+		            <h1>Tu Bogotá</h1>            
 	            </div>
 	            <div data-role="content">
-                    <p style="text-align: center;">Tipo de Necesidad:
-                    <select id="fopcion">
-                        <option value="oferta">Oferta Inmobiliaria</option>
-                        <option value="salud">Salud</option>
-                        <option value="educacion">Educación</option>
-                        <option value="cultura">Cultura</option>
-                        <option value="comercio">Comercio</option>
-                        <option value="turismo">Turismo</option>
-                        <option value="seguridad">Seguridad</option>
-                        <option value="social">Social</option>
-                        <option value="riesgo">Riesgo</option>
-                        <option value="movilidad">Movilidad</option>
-                        <option value="ambiente">Ambiente</option>
-                        <option value="espacio">Espacio Público</option>
-                    </select></p>
+                    <div data-role="fieldcontain">
+                        <label for="fopcion" class="select">Tipo de Necesidad:</label>
+                        <select id="fopcion">
+                            <option value="oferta">Oferta Inmobiliaria</option>
+                            <option value="salud">Salud</option>
+                            <option value="educacion">Educación</option>
+                            <option value="cultura">Cultura</option>
+                            <option value="comercio">Comercio</option>
+                            <option value="turismo">Turismo</option>
+                            <option value="seguridad">Seguridad</option>
+                            <option value="social">Social</option>
+                            <option value="riesgo">Riesgo</option>
+                            <option value="movilidad">Movilidad</option>
+                            <option value="ambiente">Ambiente</option>
+                            <option value="espacio">Espacio Público</option>
+                        </select>
+                    </div>
                     <textarea id="fdescripcion" rows="4" cols="25" placeholder="Descripción"></textarea>
-                    <div id="fphoto">
+                    <div>
                         <p id="ffield" style="text-align: center;">Foto: 0</p>
-                        <div style="text-align: center;" data-role="controlgroup" data-type="horizontal">                            
-                            <a href="#" data-role="button" data-inline="true" data-mini="true" onclick="capture(Camera.PictureSourceType.SAVEDPHOTOALBUM);">Existente</a>
-                            <a href="#" data-role="button" data-inline="true" data-mini="true" onclick="capture(Camera.PictureSourceType.CAMERA);">Desde la camara</a>                        
+                        <div id="fphoto">
+                            <div style="text-align: center;" data-role="controlgroup" data-type="horizontal">                            
+                                <a href="#" data-role="button" data-inline="true" data-mini="true" onclick="capture(Camera.PictureSourceType.SAVEDPHOTOALBUM);">Existente</a>
+                                <a href="#" data-role="button" data-inline="true" data-mini="true" onclick="capture(Camera.PictureSourceType.CAMERA);">Desde la camara</a>                        
+                            </div>
+                        </div>
+                        <div id="fphotoweb">
+                            <form id="data" method="post" enctype="multipart/form-data">
+                                <input type="file" name="nva_imagen" id="nva_imagen" />
+                                <button>Cargar</button>
+                            </form>
                         </div>
                     </div>
                     <div id="foferta">
-                        <p style="text-align: center;">Tipo de Oferta:</p>
-                        <select id="ftipo">
-                            <option value="arriendo">Arriendo</option>
-                            <option value="venta">Venta</option>
-                        </select>
+                        <div data-role="fieldcontain">
+                            <label for="ftipo" class="select">Tipo de Oferta:</label>
+                            <select id="ftipo">
+                                <option value="arriendo">Arriendo</option>
+                                <option value="venta">Venta</option>
+                            </select>
+                        </div>
                         <input type="text" id="fvalor" placeholder="Valor" />
                         <input type="text" id="ftelefono" placeholder="Teléfono"/>
                         <input type="text" id="fdireccion" placeholder="Dirección" />
                     </div>
-                    <p></p>
+                    <input type="text" id="fcorreo" placeholder="Correo electrónico" />
                     <a href="#" data-role="button" onclick="enviar_msg();">Enviar</a> 
 	            </div>
             </div>
@@ -175,10 +196,10 @@
 
             <div data-role="popup" id="popupGeneral">
 			        <div data-role="header">
-				        <h1>Vivi</h1>
+				        <h1>Tu Bogotá</h1>
 			        </div>
 			        <div data-role="content">
-				        <p>Escoga un punto en el mapa y haga un click sostenido para ver la informaci&oacute;n del sitio.</p><br />
+				        <p>Escoja un punto en el mapa y haga un doble clic para ver la informaci&oacute;n del sitio.</p><br />
 				        <a href="#main" data-role="button">Continuar</a>
 			        </div>
 		    </div>
