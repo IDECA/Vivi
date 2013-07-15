@@ -93,10 +93,10 @@
 		            <h1>Tu Bogotá</h1>            
 	            </div>
 	            <div data-role="content">
-                   <p style="text-align: center;">Compartir ubicación por:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                    <div data-role="controlgroup" data-type="vertical">
-                        <a href="#" id="btnS1" data-role="button" data-icon="facebook" data-mini="true" onclick="share('facebook');">Facebook</a>
-                        <a href="#" id="btnS2" data-role="button" data-icon="twitter" data-mini="true" onclick="share('twitter');">Twitter</a>
+                   <p style="text-align: center;">Compartir ubicación por:</p>
+                    <div data-role="controlgroup" data-type="horizontal">
+                        <a href="#" id="btnS1" data-role="button" data-icon="facebook" onclick="share('facebook');">Facebook</a>
+                        <a href="#" id="btnS2" data-role="button" data-icon="twitter" onclick="share('twitter');">Twitter</a>
                         <!-- <a href="#" id="btnS3" data-role="button" data-icon="email" data-mini="true" onclick="share('email');">E-mail</a> -->
                     </div>
 	            </div>
@@ -108,11 +108,11 @@
 		            <h1>Tu Bogotá</h1>            
 	            </div>
 	            <div data-role="content">
-                   <p style="text-align: center;">Radio de busqueda:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                   <p style="text-align: center;">Radio de busqueda:</p>
                     <div data-role="controlgroup" data-type="horizontal">
-                        <a href="#" id="btn1" data-role="button" data-inline="true" data-mini="true" onclick="$('#btn1,#btn2,#btn4').removeClass('ui-btn-active');updateRadius(1);$('#btn1').addClass('ui-btn-active');">1 Km.</a>
-                        <a href="#" id="btn2" data-role="button" data-inline="true" data-mini="true" onclick="$('#btn1,#btn2,#btn4').removeClass('ui-btn-active');updateRadius(2);$('#btn2').addClass('ui-btn-active');" class="ui-btn-active">2 Kms.</a>
-                        <a href="#" id="btn4" data-role="button" data-inline="true" data-mini="true" onclick="$('#btn1,#btn2,#btn4').removeClass('ui-btn-active');updateRadius(4);$('#btn4').addClass('ui-btn-active');">4 Kms.</a>
+                        <a href="#" id="btn1" data-role="button" data-inline="true" onclick="$('#btn1,#btn2,#btn4').removeClass('ui-btn-active');updateRadius(1);$('#btn1').addClass('ui-btn-active');">1 Km.</a>
+                        <a href="#" id="btn2" data-role="button" data-inline="true" onclick="$('#btn1,#btn2,#btn4').removeClass('ui-btn-active');updateRadius(2);$('#btn2').addClass('ui-btn-active');" class="ui-btn-active">2 Kms.</a>
+                        <a href="#" id="btn4" data-role="button" data-inline="true" onclick="$('#btn1,#btn2,#btn4').removeClass('ui-btn-active');updateRadius(4);$('#btn4').addClass('ui-btn-active');">4 Kms.</a>
                     </div>
 	            </div>
             </div>

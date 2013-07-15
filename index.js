@@ -133,7 +133,6 @@ function init() {
         };
     });
 
-    var ua = navigator.userAgent;
     if (isPhoneGap()) {
 
         touchScroll("lista");
@@ -201,10 +200,11 @@ function init() {
 function initReporte() {
     photoURLS = new Array();
     $('#ffield').html('Foto: ' + photoURLS.length);
-    //$('#fdescripcion')[0].value = "";
+    $('#fdescripcion')[0].value = "";
     $('#fvalor')[0].value = "";
     $('#fdireccion')[0].value = "";
     $('#ftelefono')[0].value = "";
+    $('#fcorreo')[0].value = "";
 };
 
 function displayLista() {
@@ -222,10 +222,10 @@ function cerrarPopup() {
 function share(id) {
     switch (id){
         case 'facebook':
-            window.open(encodeURI('http://www.facebook.com/sharer.php?t=' + _msg_share + '&u=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y), '_blank', '');
+            window.open(('http://www.facebook.com/sharer.php?t=' + _msg_share + '&u=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y), '_blank', '');
             break;
         case 'twitter':
-            window.open(encodeURI('https://twitter.com/intent/tweet?text=' + _msg_share + '&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y), '_blank', '');
+            window.open(('https://twitter.com/intent/tweet?text=' + _msg_share + '&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y), '_blank', '');
             break;
         case 'email':
             window.open('mailto:?subject=Encontre este lugar en Vivi&body=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y, '_system', '');
