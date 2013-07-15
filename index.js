@@ -222,13 +222,13 @@ function cerrarPopup() {
 function share(id) {
     switch (id){
         case 'facebook':
-            window.open(encodeURI('http://www.facebook.com/sharer.php?t=' + _msg_share + '&u=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1'), '_blank', '');
+            window.open(encodeURI('http://www.facebook.com/sharer.php?t=' + _msg_share + '&u=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y), '_blank', '');
             break;
         case 'twitter':
-            window.open(encodeURI('https://twitter.com/intent/tweet?text=' + _msg_share + '&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '%26d=1'), '_blank', '');
+            window.open(encodeURI('https://twitter.com/intent/tweet?text=' + _msg_share + '&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y), '_blank', '');
             break;
         case 'email':
-            window.open('mailto:?subject=Encontre este lugar en Vivi&body=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y + '&d=1', '_system', '');
+            window.open('mailto:?subject=Encontre este lugar en Vivi&body=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y, '_system', '');
             break;
     }
 }
@@ -574,7 +574,7 @@ function showResults(results, pos) {
         } catch (e) {
             
         };
-        content = content + "<br /><a href='#' onclick='cerrarPopup();' style='position: absolute;right: 5px;bottom: 5px;'>Cerrar</a>";
+        content = content + "<br /><a href='#' onclick='cerrarPopup();' style=''>Cerrar</a>";
         switch (results[i].feature.geometry.type) {
             case "point":
                 capas[pos].add(new esri.Graphic(results[i].feature.geometry,
@@ -711,6 +711,10 @@ function getUrlVars() {
 
     for (var i = 0; i < hashes.length; i++) {
         hash = hashes[i].split('=');
+
+        if (hash[0] == "pos") {
+            hash[1] = hash[1].replace("#", "");
+        }
 
         if (hash.length > 1 && hash[1].indexOf("#") == -1) {
             vars.push(hash[0]);
