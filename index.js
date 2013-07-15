@@ -258,10 +258,8 @@ function mapLoadHandler(map) {
         init = true;
         currentPoint = new esri.geometry.Point(parseFloat(getUrlVars()["pos"].split(";")[0]), parseFloat(getUrlVars()["pos"].split(";")[1]), map.spatialReference);
     } else {
-        if (isPhoneGap()) {
-            document.addEventListener("deviceready", function () {
-                navigator.geolocation.getCurrentPosition(zoomToLocation, zoomToLocationERR, { timeout: 10000 });
-            });
+        if (isPhoneGapExclusive()) {
+            navigator.geolocation.getCurrentPosition(zoomToLocation, locationError, { timeout: 10000 });
         } else {
             navigator.geolocation.getCurrentPosition(zoomToLocation, null);
         };
@@ -291,9 +289,30 @@ function zoomToLocation(position) {
     }
 };
 
-function zoomToLocationERR() {
-    alert(1);
+function locationError(error) {
+    //error occurred so stop watchPosition
+    if (navigator.geolocation) {
+        navigator.geolocation.clearWatch(watchId);
+    }
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            alert("Location not provided");
+            break;
+
+        case error.POSITION_UNAVAILABLE:
+            alert("Current location not available");
+            break;
+
+        case error.TIMEOUT:
+            alert("Timeout");
+            break;
+
+        default:
+            alert("unknown error");
+            break;
+    }
 }
+
 
 function showLayer(pos) {
     map.infoWindow.hide();
@@ -821,6 +840,14 @@ function enviar_msg() {
         }
     });
 };
+
+function isPhoneGapExclusive() {
+    try {
+        return (cordova || PhoneGap || phonegap);
+    } catch (err) {
+        return false;
+    }
+}
 
 function isPhoneGap() {
     try {
