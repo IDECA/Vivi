@@ -35,6 +35,12 @@
     </style>
 
 	<script>
+	    document.addEventListener("deviceready", onDeviceReady, false);
+	    function onDeviceReady() {
+	        navigator.geolocation.getCurrentPosition(zoomToLocation, locationError);
+	    }
+
+
 	    dojo.require("esri.map");
 	    dojo.require("esri.graphic");
 	    dojo.require("esri.tasks.geometry");

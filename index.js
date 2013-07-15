@@ -259,7 +259,7 @@ function mapLoadHandler(map) {
         currentPoint = new esri.geometry.Point(parseFloat(getUrlVars()["pos"].split(";")[0]), parseFloat(getUrlVars()["pos"].split(";")[1]), map.spatialReference);
     } else {
         if (isPhoneGapExclusive()) {
-            navigator.geolocation.getCurrentPosition(zoomToLocation, locationError, { timeout: 10000 });
+            //navigator.geolocation.getCurrentPosition(zoomToLocation, locationError, { timeout: 10000 });
         } else {
             navigator.geolocation.getCurrentPosition(zoomToLocation, locationError);
         };
@@ -281,6 +281,7 @@ function mapLoadHandler(map) {
 
 function zoomToLocation(position) {
     try {
+        alert('ok');
         initPoint = true;
         currentPoint = new esri.geometry.Point(position.coords.longitude, position.coords.latitude, map.spatialReference);
         map.centerAndZoom(currentPoint, 5);
@@ -290,6 +291,7 @@ function zoomToLocation(position) {
 };
 
 function locationError(error) {
+    alert(error.message);
     switch (error.code) {
         case error.PERMISSION_DENIED:
             alert("Location not provided");
