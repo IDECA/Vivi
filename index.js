@@ -261,6 +261,7 @@ function mapLoadHandler(map) {
     } else {
         map.centerAndZoom(new esri.geometry.Point(-74.075833, 4.598056, map.spatialReference), 5);
         currentPoint = new esri.geometry.Point(-74.075833, 4.598056, map.spatialReference);
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(zoomToLocation, null);
         }
