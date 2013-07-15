@@ -260,7 +260,7 @@ function mapLoadHandler(map) {
     } else {
         if (isPhoneGap()) {
             document.addEventListener("deviceready", function () {
-                navigator.geolocation.getCurrentPosition(zoomToLocation, null);
+                //navigator.geolocation.getCurrentPosition(zoomToLocation, null);
             });
         } else {
             navigator.geolocation.getCurrentPosition(zoomToLocation, null);
@@ -285,9 +285,7 @@ function zoomToLocation(position) {
     try {
         initPoint = true;
         currentPoint = new esri.geometry.Point(position.coords.longitude, position.coords.latitude, map.spatialReference);
-        if (map != null) {
-            map.centerAndZoom(currentPoint, 5);
-        };
+        map.centerAndZoom(currentPoint, 5);
     } catch (ex) {
        
     }
