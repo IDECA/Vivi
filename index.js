@@ -222,10 +222,10 @@ function cerrarPopup() {
 function share(id) {
     switch (id){
         case 'facebook':
-            window.open(('http://www.facebook.com/sharer.php?t=' + _msg_share + '&u=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y), '_blank', '');
+            window.open(encodeURI('http://www.facebook.com/sharer.php?t=' + _msg_share + '&u=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y), '_blank', '');
             break;
         case 'twitter':
-            window.open(('https://twitter.com/intent/tweet?text=' + _msg_share + '&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y), '_blank', '');
+            window.open(encodeURI('https://twitter.com/intent/tweet?text=' + _msg_share + '&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y), '_blank', '');
             break;
         case 'email':
             window.open('mailto:?subject=Encontre este lugar en Vivi&body=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y, '_system', '');
