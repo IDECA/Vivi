@@ -34,12 +34,16 @@
     </style>
 
 	<script>
-	    dojo.require("esri.map");
-	    dojo.require("esri.graphic");
-	    dojo.require("esri.tasks.geometry");
-	    dojo.require("esri.tasks.identify");
-	    dojo.require("esri.dijit.InfoWindowLite");
-	    dojo.addOnLoad(init);	    
+	    document.addEventListener("deviceready", onDeviceReady, false);
+
+	    function onDeviceReady() {
+	        dojo.require("esri.map");
+	        dojo.require("esri.graphic");
+	        dojo.require("esri.tasks.geometry");
+	        dojo.require("esri.tasks.identify");
+	        dojo.require("esri.dijit.InfoWindowLite");
+	        dojo.addOnLoad(init);
+	    }
     </script>
 
  </head>
