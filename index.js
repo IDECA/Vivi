@@ -255,13 +255,13 @@ function mapLoadHandler(map) {
     };
 
     if (getUrlVars()["pos"] != null) {
-        init = true;
+        initPoint = true;
         currentPoint = new esri.geometry.Point(parseFloat(getUrlVars()["pos"].split(";")[0]), parseFloat(getUrlVars()["pos"].split(";")[1]), map.spatialReference);
     } else {
         if (isPhoneGapExclusive()) {
             navigator.geolocation.getCurrentPosition(zoomToLocation, locationError, { timeout: 10000 });
         } else {
-            navigator.geolocation.getCurrentPosition(zoomToLocation, null);
+            navigator.geolocation.getCurrentPosition(zoomToLocation, locationError);
         };
     };
 
@@ -290,10 +290,6 @@ function zoomToLocation(position) {
 };
 
 function locationError(error) {
-    //error occurred so stop watchPosition
-    if (navigator.geolocation) {
-        navigator.geolocation.clearWatch(watchId);
-    }
     switch (error.code) {
         case error.PERMISSION_DENIED:
             alert("Location not provided");
