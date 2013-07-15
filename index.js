@@ -260,7 +260,7 @@ function mapLoadHandler(map) {
     } else {
         if (isPhoneGap()) {
             document.addEventListener("deviceready", function () {
-                //navigator.geolocation.getCurrentPosition(zoomToLocation, null);
+                navigator.geolocation.getCurrentPosition(zoomToLocation, zoomToLocationERR, { timeout: 10000 });
             });
         } else {
             navigator.geolocation.getCurrentPosition(zoomToLocation, null);
@@ -290,6 +290,10 @@ function zoomToLocation(position) {
        
     }
 };
+
+function zoomToLocationERR() {
+    alert(1);
+}
 
 function showLayer(pos) {
     map.infoWindow.hide();
