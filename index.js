@@ -109,6 +109,7 @@ var capas = new Array();
 var popup;
 var headerGeom;
 var photoURLS = new Array();
+var initPoint = false;
 
 var currentExtent;
 var currentPoint;
@@ -253,26 +254,40 @@ function mapLoadHandler(map) {
         capas.push(glT);
     };
 
-    if (getUrlVars()["pos"] != null) {        
-        var obj = {};
-        obj.mapPoint = new esri.geometry.Point(parseFloat(getUrlVars()["pos"].split(";")[0]), parseFloat(getUrlVars()["pos"].split(";")[1]), map.spatialReference);
-        map.centerAndZoom(obj.mapPoint, 5);
-        mapClickHandler(obj);
+    if (getUrlVars()["pos"] != null) {
+        init = true;
+        currentPoint = new esri.geometry.Point(parseFloat(getUrlVars()["pos"].split(";")[0]), parseFloat(getUrlVars()["pos"].split(";")[1]), map.spatialReference);
+    } else {
+        if (isPhoneGap()) {
+            document.addEventListener("deviceready", function () {
+                navigator.geolocation.getCurrentPosition(zoomToLocation, null);
+            });
+        } else {
+            navigator.geolocation.getCurrentPosition(zoomToLocation, null);
+        };
+    };
+
+    if (initPoint) {
+        map.centerAndZoom(currentPoint, 5);
+        if (getUrlVars()["pos"] != null) {
+            var obj = {};
+            obj.mapPoint = currentPoint;
+            mapClickHandler(obj);
+        };
     } else {
         map.centerAndZoom(new esri.geometry.Point(-74.075833, 4.598056, map.spatialReference), 5);
         currentPoint = new esri.geometry.Point(-74.075833, 4.598056, map.spatialReference);
-
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(zoomToLocation, null);
-        }
-    }
+    };
 
 }
 
 function zoomToLocation(position) {
     try {
+        initPoint = true;
         currentPoint = new esri.geometry.Point(position.coords.longitude, position.coords.latitude, map.spatialReference);
-        map.centerAndZoom(new esri.geometry.Point(position.coords.longitude, position.coords.latitude, map.spatialReference), 5);
+        if (map != null) {
+            map.centerAndZoom(currentPoint, 5);
+        };
     } catch (ex) {
        
     }
