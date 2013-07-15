@@ -109,7 +109,9 @@ var capas = new Array();
 var popup;
 var headerGeom;
 var photoURLS = new Array();
-var initPoint = false;
+
+var pLat = 4.598056;
+var pLng = -74.075833;
 
 var currentExtent;
 var currentPoint;
@@ -255,61 +257,31 @@ function mapLoadHandler(map) {
     };
 
     if (getUrlVars()["pos"] != null) {
-        initPoint = true;
         currentPoint = new esri.geometry.Point(parseFloat(getUrlVars()["pos"].split(";")[0]), parseFloat(getUrlVars()["pos"].split(";")[1]), map.spatialReference);
     } else {
-        if (isPhoneGapExclusive()) {
-            //navigator.geolocation.getCurrentPosition(zoomToLocation, locationError, { timeout: 10000 });
-        } else {
-            navigator.geolocation.getCurrentPosition(zoomToLocation, locationError);
-        };
+        currentPoint = new esri.geometry.Point(pLng, pLat, map.spatialReference);
     };
+    map.centerAndZoom(currentPoint, 5);
 
-    if (initPoint) {
-        map.centerAndZoom(currentPoint, 5);
-        if (getUrlVars()["pos"] != null) {
-            var obj = {};
-            obj.mapPoint = currentPoint;
-            mapClickHandler(obj);
-        };
-    } else {
-        map.centerAndZoom(new esri.geometry.Point(-74.075833, 4.598056, map.spatialReference), 5);
-        currentPoint = new esri.geometry.Point(-74.075833, 4.598056, map.spatialReference);
+    if (getUrlVars()["pos"] != null) {
+        var obj = {};
+        obj.mapPoint = currentPoint;
+        mapClickHandler(obj);
     };
 
 }
 
 function zoomToLocation(position) {
+    pLat = position.coords.latitude;
+    pLng = position.coords.longitude;
+
     try {
-        alert('ok');
-        initPoint = true;
         currentPoint = new esri.geometry.Point(position.coords.longitude, position.coords.latitude, map.spatialReference);
         map.centerAndZoom(currentPoint, 5);
     } catch (ex) {
        
     }
 };
-
-function locationError(error) {
-    alert(error.message);
-    switch (error.code) {
-        case error.PERMISSION_DENIED:
-            alert("Location not provided");
-            break;
-
-        case error.POSITION_UNAVAILABLE:
-            alert("Current location not available");
-            break;
-
-        case error.TIMEOUT:
-            alert("Timeout");
-            break;
-
-        default:
-            alert("unknown error");
-            break;
-    }
-}
 
 
 function showLayer(pos) {

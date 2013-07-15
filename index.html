@@ -35,11 +35,14 @@
     </style>
 
 	<script>
-	    document.addEventListener("deviceready", onDeviceReady, false);
-	    function onDeviceReady() {
-	        navigator.geolocation.getCurrentPosition(zoomToLocation, locationError);
-	    }
-
+	    if (isPhoneGapExclusive()) {
+	        document.addEventListener("deviceready", onDeviceReady, false);
+	        function onDeviceReady() {
+	            navigator.geolocation.getCurrentPosition(zoomToLocation, null);
+	        }
+	    } else {
+	        navigator.geolocation.getCurrentPosition(zoomToLocation, null);
+	    };
 
 	    dojo.require("esri.map");
 	    dojo.require("esri.graphic");
