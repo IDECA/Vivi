@@ -3,10 +3,10 @@
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "com.dhbello.vivi"
         version   = "1.0.2">
-    <name><![CDATA[Tu Bogot&aacute; ]]></name>
+    <name>Tu Bogotá</name>
 
     <description>
-        <![CDATA[Tu Bogot&aacute; es una aplicacion que le permite facilitar la toma de decisiones para la compra de Vivienda en Bogota.]]>
+        Tu Bogotá es una aplicación que le permite facilitar la toma de decisiones para la compra de Vivienda en Bogota.
     </description>
 
     <author href="http://sinesat.com" email="david.bello@sinesat.com">
