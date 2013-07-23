@@ -3,12 +3,17 @@
 PARAMETROS CONFIGURABLES
 
 */
+// Ubicación de la versión web de la aplicación
 var _url = 'http://ec2-184-72-38-228.us-west-1.compute.amazonaws.com/Vivi/';
+// Mensaje que aparece en la opcion compartir desde redes sociales
 var _msg_share = 'Encontre este lugar en la aplicación Tu Bogotá';
+// Web service empleado para cargar fotos por parte de los usuarios
 var _url_photo = 'http://metadatos.ideca.gov.co/geoportal/vivi/upload_test.jsp';
+// Web service empleado para realizar reporte de necesidades por parte de los usuarios
 var _url_msg = 'http://metadatos.ideca.gov.co/geoportal/vivi/test.jsp';
+// Variables a desplejar
 var variables = [
-    "Valor m2",
+    "Valor m2 del terreno",
     "Parques",
     "Turismo",
     "Entretenimiento",
@@ -22,6 +27,7 @@ var variables = [
     "Riesgo",
     "Oferta Inmobiliaria"
 ];
+// Colores asociados a cada variable
 var colores = [
     { r: 255, g: 0, b: 0, a: 0.45 },
     { r: 4, g: 130, b: 14, a: 0.45 },
@@ -37,6 +43,7 @@ var colores = [
     { r: 29, g: 65, b: 209, a: 0.45 },
     { r: 158, g: 90, b: 103, a: 0.45 }
 ];
+// Colores asociados a cada variable (En formato HEX)
 var coloresWeb = [
     "#FF0000",
     "#04820E",
@@ -52,6 +59,7 @@ var coloresWeb = [
     "#1D41D1",
     "#9E5A67"
 ];
+// Ubicación de los mapas a consultar
 var urls = [
     "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Valor_de_referencia_m2_terreno/MapServer",
     "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Parques/MapServer",
@@ -64,10 +72,12 @@ var urls = [
     "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Educacion/MapServer",
     "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Infraestructura_de_Seguridad/MapServer",
     "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Integracion_Social/MapServer",
-    "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Sistema_de_Movilidad/MapServer",
+    "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/SistemaMovilidad/MapServer",
     "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Riesgo/MapServer",
-    "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Corredores_Comerciales/MapServer"
+    "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/Corredores_Comerciales/MapServer",
+    "http://mapas.catastrobogota.gov.co/arcgis/rest/services/Tematicas/OfertasInmobiliarias/MapServer"
 ];
+// Capas a consultar (asociado con las direcciones de los mapas a consultar)
 var layers = [
         [4],
         [0],
@@ -80,10 +90,14 @@ var layers = [
         [0, 1, 2, 3, 4, 5],
         [0],
         [0, 1, 2, 3, 4, 5, 6],
+        [0, 1, 2, 3, 4],
         [0, 1, 2, 3],
-        [0, 1, 2, 3],
+        [0],
         [0]
 ];
+// Radio de búsqueda (por defecto)
+var radius = 2;
+
 var valoraciones = [
     0,
     0,
@@ -99,7 +113,7 @@ var valoraciones = [
     0,
     0
 ];
-var radius = 2;
+
 
 var map;
 var loaded = false;
@@ -122,7 +136,10 @@ function init() {
     headerGeom = dojo.position(dojo.byId("header"));
     dojo.byId("map").style.height = ($(document).height() - headerGeom.h) + "px";
 
-    $('#popupGeneral').popup('open');
+    if (getUrlVars()["pos"] == null) {
+        $('#popupGeneral').popup('open');
+    };
+
     popup = new esri.dijit.InfoWindowLite(null, dojo.create("div"));
     popup.startup();
 
@@ -160,24 +177,6 @@ function init() {
 
         $("#fphoto").hide();
         $("#fphotoweb").show();
-        $("form#data").submit(function () {
-            var formData = new FormData($(this)[0]);
-
-            $.ajax({
-                url: _url_photo,
-                type: 'POST',
-                data: formData,
-                async: false,
-                success: function (data) {
-                    alert(data)
-                },
-                cache: false,
-                contentType: false,
-                processData: false
-            });
-
-            return false;
-        });
 
         dojo.connect(map, "onLoad", mapLoadHandler);
         dojo.connect(map, "onClick", mapClickHandler);
@@ -195,7 +194,7 @@ function init() {
     };
 
     var streetMapLayer = new esri.layers.ArcGISTiledMapServiceLayer("http://imagenes.catastrobogota.gov.co/arcgis/rest/services/CM/CommunityMap/MapServer");
-    gsvc = new esri.tasks.GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+    gsvc = new esri.tasks.GeometryService("http://mapas.catastrobogota.gov.co/arcgis/rest/services/Geometry/GeometryServer");
     map.addLayer(streetMapLayer);
     map.resize();
 }
@@ -367,6 +366,7 @@ function showBuffer2(geometries) {
             }
             identifyParams.layerOption = esri.tasks.IdentifyParameters.LAYER_OPTION_ALL;
             identifyParams.tolerance = 20;
+            identifyParams.maxAllowableOffset = 0.0001;
             identifyParams.returnGeometry = true;
             identifyParams.layerIds = layers[i];
             identifyParams.width = 600;
@@ -443,7 +443,11 @@ function showBuffer2(geometries) {
                         showResults(results, 5);
                     });
                     break;
-
+                case 14:
+                    identifyTask.execute(identifyParams, function (results) {
+                        showResults(results, 12);
+                    });
+                    break;
             }
         };
 
@@ -575,13 +579,21 @@ function showResults(results, pos) {
 
                     break;
                 case 12:
-                    content = "N/A";
+                    value = results[i].feature.attributes["Tipo de oferta"];
+                    content = results[i].feature.attributes["Valor en pesos"] + "<br />" +
+                              "Teléfono: " + results[i].feature.attributes["Teléfono"];
                     break;
             }
         } catch (e) {
             
         };
         content = content + "<br /><a href='#' onclick='cerrarPopup();' style=''>Cerrar</a>";
+        var popcontent;
+        if (value == "N/A"){
+            popcontent = null;
+        } else {
+            popcontent = new esri.InfoTemplate(value, content)
+        };
         switch (results[i].feature.geometry.type) {
             case "point":
                 capas[pos].add(new esri.Graphic(results[i].feature.geometry,
@@ -589,7 +601,7 @@ function showResults(results, pos) {
                                                                                new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color(colores[pos]), 2),
                                                                                new dojo.Color(colores[pos])),
                                                 results[i].feature.attributes,
-                                                new esri.InfoTemplate(value, content)
+                                                popcontent
                                 ));
                 break;
             case "multipoint":
@@ -598,14 +610,14 @@ function showResults(results, pos) {
                                                                                new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color(colores[pos]), 2),
                                                                                new dojo.Color(colores[pos])),
                                                 results[i].feature.attributes,
-                                                new esri.InfoTemplate(value, content)
+                                                popcontent
                                 ));
                 break;
             case "polyline":
                 capas[pos].add(new esri.Graphic(results[i].feature.geometry,
                                                 new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color(colores[pos]), 2),
                                                 results[i].feature.attributes,
-                                                new esri.InfoTemplate(value, content)
+                                                popcontent
                                 ));
                 break;
             case "polygon":
@@ -614,7 +626,7 @@ function showResults(results, pos) {
                                                                               new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color(colores[pos]), 2),
                                                                                new dojo.Color(colores[pos])),
                                                 results[i].feature.attributes,
-                                                new esri.InfoTemplate(value, content)
+                                                popcontent
                                 ));
                 break;
             case "extent":
@@ -623,7 +635,7 @@ function showResults(results, pos) {
                                                                               new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color(colores[pos]), 2),
                                                                                new dojo.Color(colores[pos])),
                                                 results[i].feature.attributes,
-                                                new esri.InfoTemplate(value, content)
+                                                popcontent
                                 ));
                 break;
         }
@@ -750,6 +762,24 @@ function captureSuccess(imageURI) {
     ft.upload(imageURI, _url_photo, uploadSuccess, uploadFail, options);
 };
 
+function cargarFoto() {
+    var formData = new FormData($('#photoweb')[0]);
+
+    $.ajax({
+        url: _url_photo,
+        type: 'POST',
+        data: formData,
+        async: false,
+        success: uploadSuccess,
+        error: uploadFail,
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+    
+    $('#msg').popup('close');
+};
+
 function captureFail(message) {
     $('#reportar').popup('close');
     $('#msgTXT2').html('No se pudo capturar la foto, por favor, intente más tarde.');
@@ -785,18 +815,52 @@ function uploadFail(error) {
 };
 
 function enviar_msg() {
+    var valido = true;
+    if ($('#fopcion')[0].value == "oferta") {
+
+        if ($('#fdescripcion')[0].value == "") valido = false;
+        if ($('#fcorreo')[0].value == "") valido = false;
+        if ($('#fvalor')[0].value == "") valido = false;
+        if ($('#ftelefono')[0].value == "") valido = false;
+        if ($('#fdireccion')[0].value == "") valido = false;
+
+    } else {
+
+        if ($('#fdescripcion')[0].value == "") valido = false;
+        if ($('#fcorreo')[0].value == "") valido = false;
+
+    }
+    if (!valido) {
+        $('#reportar').popup('close');
+        $('#msgTXT2').html('Debe completar todos los campos para enviar un reporte.');
+        $('#msg2').popup('open');
+        return;
+    }
     var photoMSG = '';
     if (photoURLS.length > 0) {
         for (var i = 0; i < photoURLS.length; i++) {
-            photoMSG = photoMSG + ';' + photoURLS[i];
+            photoMSG = photoURLS[i] + ";" + photoMSG;
         }
     };
-    $.ajax({
-        url: _url_msg + '?categoria=' + $('#fopcion')[0].value + '&Descripcion=' + $('#fdescripcion')[0].value
-                      + ';Latitud=' + currentPoint.x + ';Longitud=' + currentPoint.y + '&Foto=' + photoMSG
+    if (photoMSG.length > 1) {
+        photoMSG = photoMSG(0, -1);
+    };
+
+    var msgURL;
+    if ($('#fopcion')[0].value == "oferta") {
+        msgURL = _url_msg + '?categoria=' + $('#fopcion')[0].value + '&Descripcion=' + $('#fdescripcion')[0].value
+                      + '&Latitud=' + currentPoint.x + '&Longitud=' + currentPoint.y + '&Foto=' + photoMSG                      
+                      + '&Correo=' + $('#fcorreo')[0].value;
+    } else {
+        msgURL = _url_msg + '?categoria=' + $('#fopcion')[0].value + '&Descripcion=' + $('#fdescripcion')[0].value
+                      + '&Latitud=' + currentPoint.x + '&Longitud=' + currentPoint.y + '&Foto=' + photoMSG
                       + '&Tipo=' + $('#ftipo')[0].value + '&Valor=' + $('#fvalor')[0].value
                       + '&Telefono=' + $('#ftelefono')[0].value + '&Direccion=' + $('#fdireccion')[0].value
-                      + '&Correo=' + $('#fcorreo')[0].value,
+                      + '&Correo=' + $('#fcorreo')[0].value;
+    };
+
+    $.ajax({
+        url: msgURL,
         type: 'GET',
         success: function () {
             $('#reportar').popup('close');
