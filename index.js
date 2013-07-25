@@ -155,7 +155,7 @@ function init() {
 
     if (isPhoneGap()) {
 
-        touchScroll("lista");
+       // touchScroll("lista");
         map = new esri.Map("map", {
             zoom: 5,
             infoWindow: popup,
