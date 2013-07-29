@@ -90,7 +90,7 @@ var layers = [
         [0, 1, 2, 3, 4, 5],
         [0],
         [0, 1, 2, 3, 4, 5, 6],
-        [0, 1, 2, 3, 4],
+        [0, 4, 5, 6, 7, 8, 10],
         [0, 1, 2, 3],
         [0],
         [0]
@@ -122,6 +122,7 @@ var gsvc;
 var capas = new Array();
 var popup;
 var headerGeom;
+var bufferCache;
 var photoURLS = new Array();
 
 var pLat = 4.598056;
@@ -155,7 +156,6 @@ function init() {
 
     if (isPhoneGap()) {
 
-       // touchScroll("lista");
         map = new esri.Map("map", {
             zoom: 5,
             infoWindow: popup,
@@ -224,13 +224,13 @@ function cerrarPopup() {
 function share(id) {
     switch (id){
         case 'facebook':
-            window.open(encodeURI('http://www.facebook.com/sharer.php?t=' + _msg_share + '&u=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y), '_blank', '');
+            window.open(encodeURI('http://www.facebook.com/sharer.php?t=' + _msg_share + '&u=' + _url + '?pos=' + currentPoint.x + 'A' + currentPoint.y), '_blank', '');
             break;
         case 'twitter':
-            window.open(encodeURI('https://twitter.com/intent/tweet?text=' + _msg_share + '&url=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y), '_blank', '');
+            window.open(encodeURI('https://twitter.com/intent/tweet?text=' + _msg_share + '&url=' + _url + '?pos=' + currentPoint.x + 'A' + currentPoint.y), '_blank', '');
             break;
         case 'email':
-            window.open('mailto:?subject=Encontre este lugar en Vivi&body=' + _url + '?pos=' + currentPoint.x + ';' + currentPoint.y, '_system', '');
+            window.open('mailto:?subject=Encontre este lugar en Vivi&body=' + _url + '?pos=' + currentPoint.x + 'A' + currentPoint.y, '_system', '');
             break;
     }
 }
@@ -256,7 +256,7 @@ function mapLoadHandler(map) {
     };
 
     if (getUrlVars()["pos"] != null) {
-        currentPoint = new esri.geometry.Point(parseFloat(getUrlVars()["pos"].split(";")[0]), parseFloat(getUrlVars()["pos"].split(";")[1]), map.spatialReference);
+        currentPoint = new esri.geometry.Point(parseFloat(getUrlVars()["pos"].split("A")[0]), parseFloat(getUrlVars()["pos"].split("A")[1]), map.spatialReference);
     } else {
         currentPoint = new esri.geometry.Point(pLng, pLat, map.spatialReference);
     };
@@ -331,6 +331,7 @@ function mapClickHandler(evt) {
 };
 
 function showBuffer(geometries) {
+    bufferCache = geometries;
     var symbol = new esri.symbol.SimpleFillSymbol(
             esri.symbol.SimpleFillSymbol.STYLE_SOLID,
             new esri.symbol.SimpleLineSymbol(
@@ -359,8 +360,7 @@ function showBuffer2(geometries) {
             identifyParams.spatialReference = map.spatialReference;
             identifyParams.mapExtent = currentExtent.getExtent();
             if (i == 0) {
-                identifyParams.geometry = currentExtent.getExtent();
-                //identifyParams.geometry = currentPoint;
+                identifyParams.geometry = currentPoint;
             } else {
                 identifyParams.geometry = currentExtent.getExtent();
             }
@@ -524,6 +524,10 @@ function showResults(results, pos) {
                         value = results[i].feature.attributes["Nombre del Establecimiento"];
                         content = "&nbsp;";
                     }
+                    if (value == "N/A") {
+                        value = "Corredor Comercial";
+                        content = "&nbsp;";
+                    };
                     break;
                 case 6:
                     if (results[i].layerId == 0) {
@@ -557,6 +561,7 @@ function showResults(results, pos) {
                     content = results[i].feature.attributes["Categoria"];
                     break;
                 case 10:
+                    value = "";
                     content = "";
                     break;
                 case 11:
@@ -589,6 +594,9 @@ function showResults(results, pos) {
         };
         content = content + "<br /><a href='#' onclick='cerrarPopup();' style=''>Cerrar</a>";
         var popcontent;
+        if (value.length > 40) {
+            value = value.substr(0, 40) + "...";
+        }
         if (value == "N/A"){
             popcontent = null;
         } else {
@@ -597,7 +605,7 @@ function showResults(results, pos) {
         switch (results[i].feature.geometry.type) {
             case "point":
                 capas[pos].add(new esri.Graphic(results[i].feature.geometry,
-                                                new esri.symbol.SimpleMarkerSymbol(esri.symbol.SimpleMarkerSymbol.STYLE_CIRCLE, 10,
+                                                new esri.symbol.SimpleMarkerSymbol(esri.symbol.SimpleMarkerSymbol.STYLE_CIRCLE, 13,
                                                                                new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color(colores[pos]), 2),
                                                                                new dojo.Color(colores[pos])),
                                                 results[i].feature.attributes,
@@ -692,32 +700,6 @@ function isTouchDevice() {
     }
 }
 
-function touchScroll(id) {
-    if (isTouchDevice()) {
-        var el = document.getElementById(id);
-        var scrollStartPosY = 0;
-        var scrollStartPosX = 0;
-
-        document.getElementById(id).addEventListener("touchstart", function (event) {
-            scrollStartPosY = this.scrollTop + event.touches[0].pageY;
-            scrollStartPosX = this.scrollLeft + event.touches[0].pageX;
-        }, false);
-
-        document.getElementById(id).addEventListener("touchmove", function (event) {
-            if ((this.scrollTop < this.scrollHeight - this.offsetHeight &&
-                this.scrollTop + event.touches[0].pageY < scrollStartPosY - 5) ||
-                (this.scrollTop != 0 && this.scrollTop + event.touches[0].pageY > scrollStartPosY + 5))
-                event.preventDefault();
-            if ((this.scrollLeft < this.scrollWidth - this.offsetWidth &&
-                this.scrollLeft + event.touches[0].pageX < scrollStartPosX - 5) ||
-                (this.scrollLeft != 0 && this.scrollLeft + event.touches[0].pageX > scrollStartPosX + 5))
-                event.preventDefault();
-            this.scrollTop = scrollStartPosY - event.touches[0].pageY;
-            this.scrollLeft = scrollStartPosX - event.touches[0].pageX;
-        }, false);
-    }
-}
-
 function getUrlVars() {
     var vars = [], hash;
     var hashes;
@@ -745,7 +727,6 @@ function getUrlVars() {
 }
 
 function capture(sourceType) {
-    $('#msg').popup('close');
     navigator.camera.getPicture(captureSuccess, captureFail, {
         destinationType: Camera.DestinationType.FILE_URI,
         sourceType: sourceType,
@@ -754,6 +735,10 @@ function capture(sourceType) {
 };
 
 function captureSuccess(imageURI) {
+    $('#reportar').popup('close');
+    $('#msgTXT2').html('Cargando foto, por favor, espere.');
+    $('#msg2').popup('open');
+
     var fail, ft, options, params, win;    
     options = new FileUploadOptions();
     options.fileKey = "nva_imagen";
@@ -763,6 +748,10 @@ function captureSuccess(imageURI) {
 };
 
 function cargarFoto() {
+    $('#reportar').popup('close');
+    $('#msgTXT2').html('Cargando foto, por favor, espere.');
+    $('#msg2').popup('open');
+
     var formData = new FormData($('#photoweb')[0]);
 
     $.ajax({
@@ -776,12 +765,9 @@ function cargarFoto() {
         contentType: false,
         processData: false
     });
-    
-    $('#msg').popup('close');
 };
 
 function captureFail(message) {
-    $('#reportar').popup('close');
     $('#msgTXT2').html('No se pudo capturar la foto, por favor, intente más tarde.');
     $('#msg2').popup('open');
 };
@@ -815,61 +801,94 @@ function uploadFail(error) {
 };
 
 function enviar_msg() {
-    var valido = true;
     if ($('#fopcion')[0].value == "oferta") {
 
-        if ($('#fdescripcion')[0].value == "") valido = false;
-        if ($('#fcorreo')[0].value == "") valido = false;
-        if ($('#fvalor')[0].value == "") valido = false;
-        if ($('#ftelefono')[0].value == "") valido = false;
-        if ($('#fdireccion')[0].value == "") valido = false;
+        $.validity.start();
+        $("#fdescripcion").require();
+        $("#fcorreo").require();
+        $("#fvalor").require();
+        $("#ftelefono").require();
+        $("#fdireccion").require();
+        if ($.validity.end().errors > 0) {
+            $('#reportar').popup('close');
+            $('#msgTXT2').html('Debe completar todos los campos para enviar un reporte.');
+            $('#msg2').popup('open');
+            return;
+        };
+
+        $.validity.start();
+        $("#fcorreo").match("email");
+        if ($.validity.end().errors > 0) {
+            $('#reportar').popup('close');
+            $('#msgTXT2').html('Debe ingresar un correo electronico valido.');
+            $('#msg2').popup('open');
+            return;
+        };
+        $.validity.start();
+        $("#fvalor").match("integer");
+        if ($.validity.end().errors > 0) {
+            $('#reportar').popup('close');
+            $('#msgTXT2').html('Debe ingresar un valor valido, sin incluir signos ni puntos.');
+            $('#msg2').popup('open');
+            return;
+        };
+
 
     } else {
 
-        if ($('#fdescripcion')[0].value == "") valido = false;
-        if ($('#fcorreo')[0].value == "") valido = false;
+        $.validity.start();
+        $("#fcorreo").require();
+        if ($.validity.end().errors > 0) {
+            $('#reportar').popup('close');
+            $('#msgTXT2').html('Debe completar todos los campos para enviar un reporte.');
+            $('#msg2').popup('open');
+            return;
+        };
+        $.validity.start();
+        $("#fcorreo").match("email");
+        if ($.validity.end().errors > 0) {
+            $('#reportar').popup('close');
+            $('#msgTXT2').html('Debe ingresar un correo electronico valido.');
+            $('#msg2').popup('open');
+            return;
+        };
+
 
     }
-    if (!valido) {
-        $('#reportar').popup('close');
-        $('#msgTXT2').html('Debe completar todos los campos para enviar un reporte.');
-        $('#msg2').popup('open');
-        return;
-    }
+
     var photoMSG = '';
     if (photoURLS.length > 0) {
         for (var i = 0; i < photoURLS.length; i++) {
-            photoMSG = photoURLS[i] + ";" + photoMSG;
+            photoMSG = photoMSG + '&Foto=' + photoURLS[i];
         }
-    };
-    if (photoMSG.length > 1) {
-        photoMSG = photoMSG(0, -1);
     };
 
     var msgURL;
     if ($('#fopcion')[0].value == "oferta") {
         msgURL = _url_msg + '?categoria=' + $('#fopcion')[0].value + '&Descripcion=' + $('#fdescripcion')[0].value
-                      + '&Latitud=' + currentPoint.x + '&Longitud=' + currentPoint.y + '&Foto=' + photoMSG                      
+                      + '&Latitud=' + currentPoint.x + '&Longitud=' + currentPoint.y + photoMSG
+                      + '&Tipo=' + $('#ftipo')[0].value + '&Valor=' + $('#fvalor')[0].value
+                      + '&Telefono=' + $('#ftelefono')[0].value + '&Direccion=' + $('#fdireccion')[0].value
                       + '&Correo=' + $('#fcorreo')[0].value;
     } else {
         msgURL = _url_msg + '?categoria=' + $('#fopcion')[0].value + '&Descripcion=' + $('#fdescripcion')[0].value
                       + '&Latitud=' + currentPoint.x + '&Longitud=' + currentPoint.y + '&Foto=' + photoMSG
-                      + '&Tipo=' + $('#ftipo')[0].value + '&Valor=' + $('#fvalor')[0].value
-                      + '&Telefono=' + $('#ftelefono')[0].value + '&Direccion=' + $('#fdireccion')[0].value
                       + '&Correo=' + $('#fcorreo')[0].value;
     };
+
+    $('#reportar').popup('close');
+    $('#msgTXT').html('Enviando reporte.');
+    $('#msg').popup('open');
 
     $.ajax({
         url: msgURL,
         type: 'GET',
         success: function () {
-            $('#reportar').popup('close');
-            $('#msgTXT').html('Mensaje enviado exitosamente.');            
+            $('#msgTXT').html('Mensaje reporte exitosamente.');
             $('#msg').popup('open');
         },
         error: function () {
-            $('#reportar').popup('close');
-            $('#msgTXT2').html('No se pudo enviar el mensaje, por favor, intente más tarde.');
+            $('#msgTXT2').html('No se pudo enviar el reporte, por favor, intente más tarde.');
             $('#msg2').popup('open');
         }
     });
