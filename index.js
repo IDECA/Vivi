@@ -749,7 +749,7 @@ function captureSuccess(imageURI) {
 
 function cargarFoto() {
     $('#reportar').popup('close');
-    $('#msgTXT2').html('Cargando foto, por favor, espere.');
+    $('#msgTXT2').html('Cargando foto... Por favor, espere.');
     $('#msg2').popup('open');
 
     var formData = new FormData($('#photoweb')[0]);
@@ -785,7 +785,7 @@ function uploadSuccess(response) {
 
     $('#reportar').popup('close');
     if (objResponse.message == null) {
-        $('#msgTXT2').html('Imagen cargada exitosamente.');
+        $('#msgTXT2').html('Foto cargada exitosamente.');
         photoURLS.push(objResponse.url);
         $('#ffield').html('Foto: ' + photoURLS.length);
     } else {
@@ -877,14 +877,14 @@ function enviar_msg() {
     };
 
     $('#reportar').popup('close');
-    $('#msgTXT').html('Enviando reporte.');
+    $('#msgTXT').html('Enviando reporte... Por favor, espere.');
     $('#msg').popup('open');
 
     $.ajax({
         url: msgURL,
         type: 'GET',
         success: function () {
-            $('#msgTXT').html('Mensaje reporte exitosamente.');
+            $('#msgTXT').html('Reporte enviado exitosamente.');
             $('#msg').popup('open');
         },
         error: function () {
