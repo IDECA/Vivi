@@ -123,7 +123,10 @@ var capas = new Array();
 var popup;
 var headerGeom;
 var bufferCache;
+var mapLock = false;
 var photoURLS = new Array();
+var cacheRiesgo;
+var cacheMovilidad;
 
 var pLat = 4.598056;
 var pLng = -74.075833;
@@ -192,9 +195,9 @@ function init() {
                     "</tr>";
         $("#table").append(html);
     };
-
+    esri.config.defaults.io.proxyUrl = "./proxy.ashx";
     var streetMapLayer = new esri.layers.ArcGISTiledMapServiceLayer("http://imagenes.catastrobogota.gov.co/arcgis/rest/services/CM/CommunityMap/MapServer");
-    gsvc = new esri.tasks.GeometryService("http://mapas.catastrobogota.gov.co/arcgis/rest/services/Geometry/GeometryServer");
+    gsvc = new esri.tasks.GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
     map.addLayer(streetMapLayer);
     map.resize();
 }
@@ -295,6 +298,10 @@ function showLayer(pos) {
 }
 
 function mapClickHandler(evt) {
+    if (mapLock) {
+        return;
+    };
+    mapLock = true;
     gl.clear();
     map.infoWindow.hide();
     $('#lista').show();
@@ -328,10 +335,11 @@ function mapClickHandler(evt) {
     params1.outSpatialReference = map.spatialReference;
 
     gsvc.buffer(params1, showBuffer2);
+    setTimeout(function () { mapLock = false; }, 4000);
 };
 
 function showBuffer(geometries) {
-    bufferCache = geometries;
+    bufferCache = geometries[0];
     var symbol = new esri.symbol.SimpleFillSymbol(
             esri.symbol.SimpleFillSymbol.STYLE_SOLID,
             new esri.symbol.SimpleLineSymbol(
@@ -347,6 +355,7 @@ function showBuffer(geometries) {
 };
 
 function showBuffer2(geometries) {
+    
     dojo.forEach(geometries, function (geometry) {
         currentExtent = geometry;
         for (var i = 0; i < variables.length; i++) {
@@ -369,8 +378,8 @@ function showBuffer2(geometries) {
             identifyParams.maxAllowableOffset = 0.0001;
             identifyParams.returnGeometry = true;
             identifyParams.layerIds = layers[i];
-            identifyParams.width = 600;
-            identifyParams.height = 600;
+            identifyParams.width = 16000;
+            identifyParams.height = 16000;
             identifyParams.dpi = 96;
             switch (i){
                 case 0:
@@ -430,12 +439,53 @@ function showBuffer2(geometries) {
                     break;
                 case 11:
                     identifyTask.execute(identifyParams, function (results) {
-                        showResults(results, 10);
+                        cacheMovilidad = results;
+                        var geomTEST = [];
+                        for (var i = 0; i < results.length; i++) {
+                            if ((results[i].feature.geometry.type == 'polygon') || (results[i].feature.geometry.type == 'polyline')) {
+                                geomTEST.push(results[i].feature.geometry);
+                            };
+                        }
+                        gsvc.intersect(geomTEST, bufferCache,
+                        function (geometries) {
+                            var posN = 0;
+                            for (var i = 0; i < cacheMovilidad.length; i++) {
+                                if ((cacheMovilidad[i].feature.geometry.type == 'polygon') || (cacheMovilidad[i].feature.geometry.type == 'polyline')) {
+                                    cacheMovilidad[i].feature.geometry = geometries[posN];
+                                    posN++;
+                                };
+                            };
+                            showResults(cacheMovilidad, 10);
+                        },
+                        function (error) {
+                            showResults(cacheMovilidad, 10);
+                        });
                     });
                     break;
                 case 12:
                     identifyTask.execute(identifyParams, function (results) {
-                        showResults(results, 11);
+                        cacheRiesgo = results;
+                        var geomTEST = [];
+                        for (var i = 0; i < results.length; i++) {
+                            if ((results[i].feature.geometry.type == 'polygon') || (results[i].feature.geometry.type == 'polyline')) {
+                                geomTEST.push(results[i].feature.geometry);
+                            };
+                        }                        
+                        gsvc.intersect(geomTEST, bufferCache,
+                        function (geometries) {
+                            var posN = 0;
+                            for (var i = 0; i < cacheRiesgo.length; i++) {
+                                if ((cacheRiesgo[i].feature.geometry.type == 'polygon') || (cacheRiesgo[i].feature.geometry.type == 'polyline')) {
+                                    cacheRiesgo[i].feature.geometry = geometries[posN];
+                                    posN++;
+                                };
+                            };
+                            showResults(cacheRiesgo, 11);
+                        },
+                        function (error) {
+                            showResults(cacheRiesgo, 11);
+                        });
+                        
                     });
                     break;
                 case 13:
@@ -804,7 +854,6 @@ function enviar_msg() {
     if ($('#fopcion')[0].value == "oferta") {
 
         $.validity.start();
-        $("#fdescripcion").require();
         $("#fcorreo").require();
         $("#fvalor").require();
         $("#ftelefono").require();
@@ -820,7 +869,7 @@ function enviar_msg() {
         $("#fcorreo").match("email");
         if ($.validity.end().errors > 0) {
             $('#reportar').popup('close');
-            $('#msgTXT2').html('Debe ingresar un correo electronico valido.');
+            $('#msgTXT2').html('Debe ingresar un correo electrónico valido.');
             $('#msg2').popup('open');
             return;
         };
@@ -837,6 +886,7 @@ function enviar_msg() {
     } else {
 
         $.validity.start();
+        $("#fdescripcion").require();
         $("#fcorreo").require();
         if ($.validity.end().errors > 0) {
             $('#reportar').popup('close');
@@ -848,7 +898,7 @@ function enviar_msg() {
         $("#fcorreo").match("email");
         if ($.validity.end().errors > 0) {
             $('#reportar').popup('close');
-            $('#msgTXT2').html('Debe ingresar un correo electronico valido.');
+            $('#msgTXT2').html('Debe ingresar un correo electrónico valido.');
             $('#msg2').popup('open');
             return;
         };
