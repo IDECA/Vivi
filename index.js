@@ -4,13 +4,16 @@ PARAMETROS CONFIGURABLES
 
 */
 // Ubicación de la versión web de la aplicación
-var _url = 'http://ec2-184-72-38-228.us-west-1.compute.amazonaws.com/Vivi/';
+var _url = 'http://aztemp.cloudapp.net/vivi/vivi/';
 // Mensaje que aparece en la opcion compartir desde redes sociales
 var _msg_share = 'Encontre este lugar en la aplicación Tu Bogotá';
 // Web service empleado para cargar fotos por parte de los usuarios
-var _url_photo = 'http://metadatos.ideca.gov.co/geoportal/vivi/upload_test.jsp';
+var _url_photo = 'http://aztemp.cloudapp.net/vivi/upload_test.jsp';
 // Web service empleado para realizar reporte de necesidades por parte de los usuarios
-var _url_msg = 'http://metadatos.ideca.gov.co/geoportal/vivi/test.jsp';
+var _url_msg = 'http://aztemp.cloudapp.net/vivi/tmp.jsp?http://metadatos.ideca.gov.co/geoportal/vivi/test.jsp';
+var _proxy_url = 'http://aztemp.cloudapp.net/vivi/tmp.jsp';
+var _geometry_url = 'http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer';
+var _map_url = 'http://imagenes.catastrobogota.gov.co/arcgis/rest/services/CM/CommunityMap/MapServer';
 // Variables a desplejar
 var variables = [
     "Valor m2 del terreno",
@@ -195,9 +198,9 @@ function init() {
                     "</tr>";
         $("#table").append(html);
     };
-    esri.config.defaults.io.proxyUrl = "./proxy.ashx";
-    var streetMapLayer = new esri.layers.ArcGISTiledMapServiceLayer("http://imagenes.catastrobogota.gov.co/arcgis/rest/services/CM/CommunityMap/MapServer");
-    gsvc = new esri.tasks.GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+    esri.config.defaults.io.proxyUrl = _proxy_url;
+    var streetMapLayer = new esri.layers.ArcGISTiledMapServiceLayer(_map_url);
+    gsvc = new esri.tasks.GeometryService(_geometry_url);
     map.addLayer(streetMapLayer);
     map.resize();
 }
@@ -811,8 +814,8 @@ function cargarFoto() {
         async: false,
         success: uploadSuccess,
         error: uploadFail,
-        cache: false,
         contentType: false,
+        cache: false,
         processData: false
     });
 };
@@ -824,15 +827,7 @@ function captureFail(message) {
 
 function uploadSuccess(response) {
     var objResponse;
-    try {
-        objResponse = JSON.parse(response.response.replace('url', '"url"').replace('message', '"message"').replace("\'", '"').replace("\'", '"'));
-    } catch (err) {
-        $('#reportar').popup('close');
-        $('#msgTXT2').html('No se pudo cargar la foto. Razón: ' + err);
-        $('#msg2').popup('open');
-        return;
-    };
-
+    objResponse = response;
     $('#reportar').popup('close');
     if (objResponse.message == null) {
         $('#msgTXT2').html('Foto cargada exitosamente.');
@@ -846,7 +841,7 @@ function uploadSuccess(response) {
 
 function uploadFail(error) {
     $('#reportar').popup('close');
-    $('#msgTXT2').html('No se pudo cargar la foto, por favor, intente más tarde.' + error);
+    $('#msgTXT2').html('No se pudo cargar la foto, por favor, intente más tarde.');
     $('#msg2').popup('open');
 };
 
