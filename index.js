@@ -374,7 +374,7 @@ function showBuffer2(geometries) {
             if (i == 0) {
                 identifyParams.geometry = currentPoint;
             } else {
-                identifyParams.geometry = currentExtent.getExtent();
+                identifyParams.geometry = currentExtent;
             }
             identifyParams.layerOption = esri.tasks.IdentifyParameters.LAYER_OPTION_ALL;
             identifyParams.tolerance = 20;
