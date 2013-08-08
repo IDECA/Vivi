@@ -10,7 +10,7 @@ var _msg_share = 'Encontre este lugar en la aplicación Tu Bogotá';
 // Web service empleado para cargar fotos por parte de los usuarios
 var _url_photo = 'http://aztemp.cloudapp.net/vivi/upload_test.jsp';
 // Web service empleado para realizar reporte de necesidades por parte de los usuarios
-var _url_msg = 'http://aztemp.cloudapp.net/vivi/tmp.jsp?http://metadatos.ideca.gov.co/geoportal/vivi/test.jsp';
+var _url_msg = 'http://aztemp.cloudapp.net/vivi/tmp.jsp?http://idecabogota.appspot.com/test.jsp';
 var _proxy_url = 'http://aztemp.cloudapp.net/vivi/tmp.jsp';
 var _geometry_url = 'http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer';
 var _map_url = 'http://imagenes.catastrobogota.gov.co/arcgis/rest/services/CM/CommunityMap/MapServer';
@@ -917,7 +917,7 @@ function enviar_msg() {
                       + '&Correo=' + $('#fcorreo')[0].value;
     } else {
         msgURL = _url_msg + '?categoria=' + $('#fopcion')[0].value + '&Descripcion=' + $('#fdescripcion')[0].value
-                      + '&Latitud=' + currentPoint.x + '&Longitud=' + currentPoint.y + '&Foto=' + photoMSG
+                      + '&Latitud=' + currentPoint.x + '&Longitud=' + currentPoint.y + photoMSG
                       + '&Correo=' + $('#fcorreo')[0].value;
     };
 
