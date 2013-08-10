@@ -844,7 +844,7 @@ function uploadSuccessFT(response) {
     objResponse = JSON.parse(response.response);
     $('#reportar').popup('close');
     if (objResponse.message == null) {
-        $('#msgTXT2').html('Foto cargada exitosamente.' + objResponse.url);
+        $('#msgTXT2').html('Foto cargada exitosamente.');
         photoURLS.push(objResponse.url);
         $('#ffield').html('Foto: ' + photoURLS.length);
     } else {
