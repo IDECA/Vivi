@@ -797,7 +797,7 @@ function captureSuccess(imageURI) {
     options.fileKey = "nva_imagen";
     options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
     ft = new FileTransfer();
-    ft.upload(imageURI, _url_photo, uploadSuccess, uploadFail, options);
+    ft.upload(imageURI, _url_photo, uploadSuccessFT, uploadFail, options);
 };
 
 function cargarFoto() {
@@ -830,7 +830,21 @@ function uploadSuccess(response) {
     objResponse = response;
     $('#reportar').popup('close');
     if (objResponse.message == null) {
-        $('#msgTXT2').html('Foto cargada exitosamente.' + objResponse.url);
+        $('#msgTXT2').html('Foto cargada exitosamente.');
+        photoURLS.push(objResponse.url);
+        $('#ffield').html('Foto: ' + photoURLS.length);
+    } else {
+        $('#msgTXT2').html('No se pudo cargar la foto. Razón: ' + objResponse.message);
+    }
+    $('#msg2').popup('open');
+};
+
+function uploadSuccessFT(response) {
+    var objResponse;
+    objResponse = JSON.parse(response.response);
+    $('#reportar').popup('close');
+    if (objResponse.message == null) {
+        $('#msgTXT2').html('Foto cargada exitosamente.');
         photoURLS.push(objResponse.url);
         $('#ffield').html('Foto: ' + photoURLS.length);
     } else {
