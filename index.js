@@ -830,7 +830,7 @@ function uploadSuccess(response) {
     objResponse = response;
     $('#reportar').popup('close');
     if (objResponse.message == null) {
-        $('#msgTXT2').html('Foto cargada exitosamente.');
+        $('#msgTXT2').html('Foto cargada exitosamente.' + objResponse.url);
         photoURLS.push(objResponse.url);
         $('#ffield').html('Foto: ' + photoURLS.length);
     } else {
