@@ -6,7 +6,7 @@ PARAMETROS CONFIGURABLES
 // Ubicación de la versión web de la aplicación
 var _url = 'http://aztemp.cloudapp.net/vivi/vivi/';
 // Mensaje que aparece en la opcion compartir desde redes sociales
-var _msg_share = 'Encontre este lugar en la aplicación Tu Bogotá';
+var _msg_share = 'Encontré este lugar en la aplicación Tu Bogotá';
 // Web service empleado para cargar fotos por parte de los usuarios
 var _url_photo = 'http://aztemp.cloudapp.net/vivi/upload_test.jsp';
 // Web service empleado para realizar reporte de necesidades por parte de los usuarios
@@ -236,7 +236,7 @@ function share(id) {
             window.open(encodeURI('https://twitter.com/intent/tweet?text=' + _msg_share + '&url=' + _url + '?pos=' + currentPoint.x + 'A' + currentPoint.y), '_blank', '');
             break;
         case 'email':
-            window.open('mailto:?subject=Encontre este lugar en Vivi&body=' + _url + '?pos=' + currentPoint.x + 'A' + currentPoint.y, '_system', '');
+            window.open('mailto:?subject=Encontré este lugar en Vivi&body=' + _url + '?pos=' + currentPoint.x + 'A' + currentPoint.y, '_system', '');
             break;
     }
 }
@@ -783,6 +783,7 @@ function capture(sourceType) {
     navigator.camera.getPicture(captureSuccess, captureFail, {
         destinationType: Camera.DestinationType.FILE_URI,
         sourceType: sourceType,
+        encodingType: Camera.EncodingType.JPEG,
         correctOrientation: true
     });
 };
@@ -795,7 +796,7 @@ function captureSuccess(imageURI) {
     var fail, ft, options, params, win;    
     options = new FileUploadOptions();
     options.fileKey = "nva_imagen";
-    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+    options.fileName = "imagen.jpg";
     ft = new FileTransfer();
     ft.upload(imageURI, _url_photo, uploadSuccessFT, uploadFail, options);
 };
@@ -878,7 +879,7 @@ function enviar_msg() {
         $("#fcorreo").match("email");
         if ($.validity.end().errors > 0) {
             $('#reportar').popup('close');
-            $('#msgTXT2').html('Debe ingresar un correo electrónico valido.');
+            $('#msgTXT2').html('Debe ingresar un correo electrónico válido.');
             $('#msg2').popup('open');
             return;
         };
@@ -886,7 +887,7 @@ function enviar_msg() {
         $("#fvalor").match("integer");
         if ($.validity.end().errors > 0) {
             $('#reportar').popup('close');
-            $('#msgTXT2').html('Debe ingresar un valor valido, sin incluir signos ni puntos.');
+            $('#msgTXT2').html('Debe ingresar un valor válido, sin incluir signos ni puntos.');
             $('#msg2').popup('open');
             return;
         };
@@ -907,7 +908,7 @@ function enviar_msg() {
         $("#fcorreo").match("email");
         if ($.validity.end().errors > 0) {
             $('#reportar').popup('close');
-            $('#msgTXT2').html('Debe ingresar un correo electrónico valido.');
+            $('#msgTXT2').html('Debe ingresar un correo electrónico válido.');
             $('#msg2').popup('open');
             return;
         };
