@@ -614,8 +614,35 @@ function showResults(results, pos) {
                     content = results[i].feature.attributes["Categoria"];
                     break;
                 case 10:
-                    value = "";
-                    content = "";
+                    if (results[i].layerId == 0) {
+                        value = "Estación Transmilenio";
+                        content = "Nombre: " + results[i].feature.attributes["ESTANOM"] + "<br />Troncal: " + results[i].feature.attributes["ESTATRONCAL"];
+                    }
+                    if (results[i].layerId == 4) {
+                        value = "Paraderos SITP";
+                        content = "Nombre: " + results[i].feature.attributes["PARNOMBRE"] + "<br />Dirección: " + results[i].feature.attributes["PARDIRBAN"];
+                    }
+                    if (results[i].layerId == 5) {
+                        value = "Rutas SITP";
+                        content = "Número de ruta: " + results[i].feature.attributes["RSITPRUTA"] + "<br />Origen – Destino: " + results[i].feature.attributes["RSITPDENO"];
+                    }
+                    if (results[i].layerId == 6) {
+                        value = "Troncal: " + results[i].feature.attributes["TRONCOD"];
+                        content = "Nombre: " + results[i].feature.attributes["TRONNOM"];
+                    }
+                    if (results[i].layerId == 7) {
+                        value = "Cicloruta";
+                        content = "Nombre: " + results[i].feature.attributes["Nombre de la cicloruta"] + "<br />Desde: " + results[i].feature.attributes["Desde"] + "<br />Hasta: " + results[i].feature.attributes["Hasta"];
+                    }
+                    if (results[i].layerId == 8) {
+                        value = "Ruta de bus";
+                        content = "Número de ruta: " + results[i].feature.attributes["Número de la ruta"] + "<br />Origen – Destino: " + results[i].feature.attributes["Origen - Destino"];
+                    }
+                    if (results[i].layerId == 10) {
+                        value = results[i].feature.attributes["NOM_VIAL"];
+                        content = "&nbsp;";
+                    }
+
                     break;
                 case 11:
                     if (results[i].layerId == 0) {
