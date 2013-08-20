@@ -154,7 +154,7 @@ function init() {
 
     if (isPhoneGapExclusive()) {
         if ((navigator.network.connection.type == Connection.UNKNOWN) || (navigator.network.connection.type == Connection.NONE)) {
-            $('#msgTXT').html('Tu Bogotá requiere una conexión de datos para funcionar correctamente... Por favor, verifique su configuración de red y intente nuevamente.');
+            $('#msgTXT').html('Tu Bogotá requiere una conexión de datos para funcionar correctamente. Por favor, verifique su configuración de red e intente nuevamente.');
             $('#msg').popup('open');
             return;
         };
@@ -313,7 +313,7 @@ function showLayer(pos) {
 function mapClickHandler(evt) {
     if (isPhoneGapExclusive()) {
         if ((navigator.network.connection.type == Connection.UNKNOWN) || (navigator.network.connection.type == Connection.NONE)) {
-            $('#msgTXT').html('Tu Bogotá requiere una conexión de datos para funcionar correctamente... Por favor, verifique su configuración de red y intente nuevamente.');
+            $('#msgTXT').html('Tu Bogotá requiere una conexión de datos para funcionar correctamente. Por favor, verifique su configuración de red e intente nuevamente.');
             $('#msg').popup('open');
             return;
         };
