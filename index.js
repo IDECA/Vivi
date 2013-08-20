@@ -199,14 +199,6 @@ function init() {
         $("#table").append(html);
     };
 
-    if (isPhoneGapExclusive()) {
-        if ((navigator.connection.type == Connection.UNKNOWN) || (navigator.connection.type == Connection.NONE)) {
-            $('#msgTXT').html('Tu Bogotá requiere una conexión de datos para funcionar correctamente... Por favor, verifique su configuración de red y intente nuevamente.');
-            $('#msg').popup('open');
-            return;
-        };
-    }
-
     esri.config.defaults.io.proxyUrl = _proxy_url;
     var streetMapLayer = new esri.layers.ArcGISTiledMapServiceLayer(_map_url);
     gsvc = new esri.tasks.GeometryService(_geometry_url);
