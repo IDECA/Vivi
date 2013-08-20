@@ -198,6 +198,15 @@ function init() {
                     "</tr>";
         $("#table").append(html);
     };
+
+    if (isPhoneGapExclusive()) {
+        if ((navigator.connection.type == Connection.UNKNOWN) || (navigator.connection.type == Connection.NONE)) {
+            $('#msgTXT').html('Tu Bogotá requiere una conexión de datos para funcionar correctamente... Por favor, verifique su configuración de red y intente nuevamente.');
+            $('#msg').popup('open');
+            return;
+        };
+    }
+
     esri.config.defaults.io.proxyUrl = _proxy_url;
     var streetMapLayer = new esri.layers.ArcGISTiledMapServiceLayer(_map_url);
     gsvc = new esri.tasks.GeometryService(_geometry_url);
@@ -301,6 +310,13 @@ function showLayer(pos) {
 }
 
 function mapClickHandler(evt) {
+    if (isPhoneGapExclusive()) {
+        if ((navigator.connection.type == Connection.UNKNOWN) || (navigator.connection.type == Connection.NONE)) {
+            $('#msgTXT').html('Tu Bogotá requiere una conexión de datos para funcionar correctamente... Por favor, verifique su configuración de red y intente nuevamente.');
+            $('#msg').popup('open');
+            return;
+        };
+    }
     if (mapLock) {
         return;
     };
@@ -388,56 +404,78 @@ function showBuffer2(geometries) {
                 case 0:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 0);
+                    }, function (error) {
+                        $("#Value" + 0).html("Servicio no disponible");
                     });
                     break;
                 case 1:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 1);
+                    }, function (error) {
+                        $("#Value" + 1).html("Servicio no disponible");
                     });
                     break;
                 case 2:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 2);
+                    }, function (error) {
+                        $("#Value" + 2).html("Servicio no disponible");
                     });
                     break;
                 case 3:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 3);
+                    }, function (error) {
+                        $("#Value" + 3).html("Servicio no disponible");
                     });
                     break;
                 case 4:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 4);
+                    }, function (error) {
+                        $("#Value" + 4).html("Servicio no disponible");
                     });
                     break;
                 case 5:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 4);
+                    }, function (error) {
+                        $("#Value" + 4).html("Servicio no disponible");
                     });
                     break;
                 case 6:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 5);
+                    }, function (error) {
+                        $("#Value" + 5).html("Servicio no disponible");
                     });
                     break;
                 case 7:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 6);
+                    }, function (error) {
+                        $("#Value" + 6).html("Servicio no disponible");
                     });
                     break;
                 case 8:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 7);
+                    }, function (error) {
+                        $("#Value" + 7).html("Servicio no disponible");
                     });
                     break;
                 case 9:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 8);
+                    }, function (error) {
+                        $("#Value" + 8).html("Servicio no disponible");
                     });
                     break;
                 case 10:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 9);
+                    }, function (error) {
+                        $("#Value" + 9).html("Servicio no disponible");
                     });
                     break;
                 case 11:
@@ -463,6 +501,8 @@ function showBuffer2(geometries) {
                         function (error) {
                             showResults(cacheMovilidad, 10);
                         });
+                    }, function (error) {
+                        $("#Value" + 10).html("Servicio no disponible");
                     });
                     break;
                 case 12:
@@ -489,16 +529,22 @@ function showBuffer2(geometries) {
                             showResults(cacheRiesgo, 11);
                         });
                         
+                    }, function (error) {
+                        $("#Value" + 11).html("Servicio no disponible");
                     });
                     break;
                 case 13:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 5);
+                    }, function (error) {
+                        $("#Value" + 5).html("Servicio no disponible");
                     });
                     break;
                 case 14:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 12);
+                    }, function (error) {
+                        $("#Value" + 12).html("Servicio no disponible");
                     });
                     break;
             }
