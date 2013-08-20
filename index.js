@@ -140,6 +140,26 @@ var pressTimer;
 var evtParams;
 
 function init() {
+
+    for (var i = 0; i < variables.length; i++) {
+        var html = "<tr onclick='showLayer(" + i + ");'  style='background: url(\"images/BGTable.png\") repeat scroll 0 0 transparent;border-top:2px solid white;border-bottom:1px solid white;'>" +
+                        "<td style='width:20px;'><div style='height:20px;width:20px;'><img src='images/cat" + i + ".png' /></div></td>" +
+                        "<td>" + variables[i] + "</td>" +
+                        "<td>" +
+                            "<div id='Value" + i + "' style='text-align: right;'></div>" +
+                        "</td>" +
+                    "</tr>";
+        $("#table").append(html);
+    };
+
+    if (isPhoneGapExclusive()) {
+        if ((navigator.connection.type == Connection.UNKNOWN) || (navigator.connection.type == Connection.NONE)) {
+            $('#msgTXT').html('Tu Bogotá requiere una conexión de datos para funcionar correctamente... Por favor, verifique su configuración de red y intente nuevamente.');
+            $('#msg').popup('open');
+            return;
+        };
+    }
+    
     headerGeom = dojo.position(dojo.byId("header"));
     dojo.byId("map").style.height = ($(document).height() - headerGeom.h) + "px";
 
@@ -186,17 +206,6 @@ function init() {
 
         dojo.connect(map, "onLoad", mapLoadHandler);
         dojo.connect(map, "onClick", mapClickHandler);
-    };
-    
-    for (var i = 0; i < variables.length; i++) {
-        var html = "<tr onclick='showLayer(" + i + ");'  style='background: url(\"images/BGTable.png\") repeat scroll 0 0 transparent;border-top:2px solid white;border-bottom:1px solid white;'>" +
-                        "<td style='width:20px;'><div style='height:20px;width:20px;'><img src='images/cat" + i + ".png' /></div></td>" +
-                        "<td>" + variables[i] + "</td>" +
-                        "<td>" +
-                            "<div id='Value" + i + "' style='text-align: right;'></div>" +
-                        "</td>" + 
-                    "</tr>";
-        $("#table").append(html);
     };
 
     esri.config.defaults.io.proxyUrl = _proxy_url;
