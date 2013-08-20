@@ -153,6 +153,7 @@ function init() {
     };
 
     if (isPhoneGapExclusive()) {
+        alert(navigator.connection.type);
         if ((navigator.connection.type == Connection.UNKNOWN) || (navigator.connection.type == Connection.NONE)) {
             $('#msgTXT').html('Tu Bogotá requiere una conexión de datos para funcionar correctamente... Por favor, verifique su configuración de red y intente nuevamente.');
             $('#msg').popup('open');
