@@ -857,8 +857,7 @@ function capture(sourceType) {
     navigator.camera.getPicture(captureSuccess, captureFail, {
         destinationType: Camera.DestinationType.FILE_URI,
         sourceType: sourceType,
-        encodingType: Camera.EncodingType.JPEG,
-        correctOrientation: true
+        encodingType: Camera.EncodingType.JPEG
     });
 };
 
