@@ -160,8 +160,7 @@ function init() {
         };
     }
     
-    headerGeom = dojo.position(dojo.byId("header"));
-    dojo.byId("map").style.height = ($(document).height() - headerGeom.h) + "px";
+    updateSize();
 
     if (getUrlVars()["pos"] == null) {
         $('#popupGeneral').popup('open');
@@ -185,7 +184,7 @@ function init() {
         map = new esri.Map("map", {
             zoom: 5,
             infoWindow: popup,
-            autoResize: true
+            autoresize: true
         });
 
         $("#fphoto").show();
@@ -198,7 +197,7 @@ function init() {
             zoom: 5,
             nav: true,
             infoWindow: popup,
-            autoResize: true
+            autoresize: true
         });
 
         $("#fphoto").hide();
@@ -227,7 +226,19 @@ function initReporte() {
 
 function displayLista() {
     $('#lista').toggle();
+    if (map) {
+	    map.reposition();
+	    map.resize();
+	}
 }
+
+function updateSize() {
+    var the_height = $(window).height() - $("#header").height() - $("#footer").height() - 8;
+    $("#map").height(the_height);
+    $("#lista").css("height", function (index) {
+        return parseInt($(document).height() * 0.2) + "px";
+    });
+};
 
 function updateRadius(val) {
     radius = val;
