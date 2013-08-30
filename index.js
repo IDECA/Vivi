@@ -338,7 +338,10 @@ function mapClickHandler(evt) {
     mapLock = true;
     gl.clear();
     map.infoWindow.hide();
-    $('#lista').show();
+    if (!($("#lista").is(":visible"))) {
+        displayLista();
+    };
+
     for (var i = 0; i < variables.length; i++) {
         capas[i].clear();
         capas[i].setVisibility(false);        
@@ -409,7 +412,7 @@ function showBuffer2(geometries) {
             }
             identifyParams.layerOption = esri.tasks.IdentifyParameters.LAYER_OPTION_ALL;
             identifyParams.tolerance = 20;
-            identifyParams.maxAllowableOffset = 0.0001;
+            identifyParams.maxAllowableOffset = 0.0007;
             identifyParams.returnGeometry = true;
             identifyParams.layerIds = layers[i];
             identifyParams.width = 16000;
@@ -580,6 +583,11 @@ function showResults(results, pos) {
     valoraciones[pos] = valoraciones[pos] + results.length;
     var n = Math.round((valoraciones[pos] / (radius * radius)));
     n = Math.min(n, 5);
+
+    if (pos == 11) {
+        n = 5 - n;
+    };
+
     var str = "";
     for (var i = 0; i < 5; i++) {
         if (i < n) {
@@ -604,8 +612,8 @@ function showResults(results, pos) {
                     content = "&nbsp;"
                     break;
                 case 1:
-                    value = results[i].feature.attributes["Nombre"];
-                    content = "&nbsp;"
+                    value = "Parque";
+                    content = results[i].feature.attributes["Nombre"];
                     break;
                 case 2:
                     if (results[i].layerId != 18) {
@@ -712,7 +720,7 @@ function showResults(results, pos) {
                     }
                     if (results[i].layerId == 1) {
                         value = "Riesgo Tecnológico";
-                        content = results[i].feature.attributes["Razón social"];
+                        content = "Empresa: " + results[i].feature.attributes["Razón social"];
                     }
                     if (results[i].layerId == 2) {
                         value = "Riesgo de Remoción";
