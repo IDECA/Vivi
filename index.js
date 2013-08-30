@@ -226,18 +226,21 @@ function initReporte() {
 
 function displayLista() {
     $('#lista').toggle();
-    if (map) {
-	    map.reposition();
-	    map.resize();
-	}
+    updateSize();
 }
 
 function updateSize() {
-    var the_height = $(window).height() - $("#header").height() - $("#footer").height() - 8;
+    if ($("#lista").is(":visible")) {
+        $("#lista").height(parseInt($(document).height() * 0.2));
+    } else {
+        $("#lista").height(0);
+    };
+    var the_height = $(window).height() - $("#header").height() - $("#lista").height() - 8;
     $("#map").height(the_height);
-    $("#lista").css("height", function (index) {
-        return parseInt($(document).height() * 0.2) + "px";
-    });
+    if (map) {
+        map.reposition();
+        map.resize();
+    }
 };
 
 function updateRadius(val) {

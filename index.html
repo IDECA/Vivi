@@ -51,7 +51,7 @@
 
 	    if (isPhoneGapExclusive()) {
 	        document.addEventListener("deviceready", onDeviceReady, false);
-	        window.addEventListener('orientationchange', updateSize);
+	        window.addEventListener('resize', updateSize);
 
 	        function onDeviceReady() {
 	            navigator.geolocation.getCurrentPosition(zoomToLocation, null);
@@ -249,7 +249,7 @@
 		    </div>     
 	    </div>
 
-        <div id="footer" data-role="footer"> 
+        <div id="footer" data-role="footer" data-position="fixed"> 
 
 	         <div id="lista" style="position: absolute;width:100%;bottom:0px;padding: 0;overflow:auto;z-index:100;display:none;text-shadow:none;color:gray;">
                 <table id="table" style="width:100%;border-collapse: collapse;">
