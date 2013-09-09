@@ -93,7 +93,7 @@ var layers = [
         [0, 1, 2, 3, 4, 5],
         [0],
         [0, 1, 2, 3, 4, 5, 6],
-        [0, 4, 5, 6, 7, 8, 10],
+        [0, 4, 5, 6, 7, 8],
         [0, 1, 2, 3],
         [0],
         [0]
@@ -151,7 +151,6 @@ function init() {
                     "</tr>";
         $("#table").append(html);
     };
-
     if (isPhoneGapExclusive()) {
         if ((navigator.network.connection.type == Connection.UNKNOWN) || (navigator.network.connection.type == Connection.NONE)) {
             $('#msgTXT').html('Tu Bogotá requiere una conexión de datos para funcionar correctamente. Por favor, verifique su configuración de red e intente nuevamente.');
@@ -412,7 +411,7 @@ function showBuffer2(geometries) {
             }
             identifyParams.layerOption = esri.tasks.IdentifyParameters.LAYER_OPTION_ALL;
             identifyParams.tolerance = 20;
-            identifyParams.maxAllowableOffset = 0.0007;
+            identifyParams.maxAllowableOffset = 0.0001;
             identifyParams.returnGeometry = true;
             identifyParams.layerIds = layers[i];
             identifyParams.width = 16000;
@@ -423,77 +422,77 @@ function showBuffer2(geometries) {
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 0);
                     }, function (error) {
-                        $("#Value" + 0).html("Servicio no disponible");
+                        $("#Value" + 0).html("<img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' />");
                     });
                     break;
                 case 1:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 1);
                     }, function (error) {
-                        $("#Value" + 1).html("Servicio no disponible");
+                        $("#Value" + 1).html("<img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' />");
                     });
                     break;
                 case 2:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 2);
                     }, function (error) {
-                        $("#Value" + 2).html("Servicio no disponible");
+                        $("#Value" + 2).html("<img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' />");
                     });
                     break;
                 case 3:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 3);
                     }, function (error) {
-                        $("#Value" + 3).html("Servicio no disponible");
+                        $("#Value" + 3).html("<img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' />");
                     });
                     break;
                 case 4:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 4);
                     }, function (error) {
-                        $("#Value" + 4).html("Servicio no disponible");
+                        $("#Value" + 4).html("<img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' />");
                     });
                     break;
                 case 5:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 4);
                     }, function (error) {
-                        $("#Value" + 4).html("Servicio no disponible");
+                        $("#Value" + 4).html("<img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' />");
                     });
                     break;
                 case 6:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 5);
                     }, function (error) {
-                        $("#Value" + 5).html("Servicio no disponible");
+                        $("#Value" + 5).html("<img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' />");
                     });
                     break;
                 case 7:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 6);
                     }, function (error) {
-                        $("#Value" + 6).html("Servicio no disponible");
+                        $("#Value" + 6).html("<img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' />");
                     });
                     break;
                 case 8:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 7);
                     }, function (error) {
-                        $("#Value" + 7).html("Servicio no disponible");
+                        $("#Value" + 7).html("<img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' />");
                     });
                     break;
                 case 9:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 8);
                     }, function (error) {
-                        $("#Value" + 8).html("Servicio no disponible");
+                        $("#Value" + 8).html("<img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' />");
                     });
                     break;
                 case 10:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 9);
                     }, function (error) {
-                        $("#Value" + 9).html("Servicio no disponible");
+                        $("#Value" + 9).html("<img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' />");
                     });
                     break;
                 case 11:
@@ -520,7 +519,7 @@ function showBuffer2(geometries) {
                             showResults(cacheMovilidad, 10);
                         });
                     }, function (error) {
-                        $("#Value" + 10).html("Servicio no disponible");
+                        $("#Value" + 10).html("<img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' />");
                     });
                     break;
                 case 12:
@@ -548,21 +547,21 @@ function showBuffer2(geometries) {
                         });
                         
                     }, function (error) {
-                        $("#Value" + 11).html("Servicio no disponible");
+                        $("#Value" + 11).html("<img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' />");
                     });
                     break;
                 case 13:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 5);
                     }, function (error) {
-                        $("#Value" + 5).html("Servicio no disponible");
+                        $("#Value" + 5).html("<img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' />");
                     });
                     break;
                 case 14:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 12);
                     }, function (error) {
-                        $("#Value" + 12).html("Servicio no disponible");
+                        $("#Value" + 12).html("<img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' />");
                     });
                     break;
             }
@@ -891,7 +890,7 @@ function captureSuccess(imageURI) {
     var fail, ft, options, params, win;    
     options = new FileUploadOptions();
     options.fileKey = "nva_imagen";
-    options.fileName = "imagen.jpg";
+    options.fileName = "imagen_" + new Date().getTime()  + ".jpg";
     ft = new FileTransfer();
     ft.upload(imageURI, _url_photo, uploadSuccessFT, uploadFail, options);
 };
