@@ -159,7 +159,14 @@ function init() {
         };
         document.addEventListener("backbutton", function () {
             if ($(".ui-page-active .ui-popup-active").length > 0) {
-                navigator.app.backHistory();
+                $('#reportar').popup('close');
+                $('#share').popup('close');
+                $('#configuracion').popup('close');
+                $('#acerca').popup('close');
+                $('#tutorial').popup('close');
+                $('#msg').popup('close');
+                $('#msg2').popup('close');
+                $('#popupGeneral').popup('close');                
             } else {
                 navigator.app.exitApp();
             };
