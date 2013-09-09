@@ -157,6 +157,13 @@ function init() {
             $('#msg').popup('open');
             return;
         };
+        document.addEventListener("backbutton", function () {
+            if ($(".ui-page-active .ui-popup-active").length > 0) {
+                navigator.app.backHistory();
+            } else {
+                navigator.app.exitApp();
+            };
+        }, true);
     }
     
     updateSize();
