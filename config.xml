@@ -2,7 +2,7 @@
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "com.dhbello.vivi"
-        version   = "1.0.4">
+        version   = "1.0.5">
     <name>Tu Bogotá</name>
 
     <description>
@@ -39,5 +39,10 @@
     <gap:splash src="res/screen/iphone_retina_portrait.png" gap:platform="ios" width="640" height="960"/>
     <gap:splash src="res/screen/ipad_portrait.png" gap:platform="ios" width="768" height="1024"/>
     <gap:splash src="res/screen/ipad_landscape.png" gap:platform="ios" width="1024" height="768"/>
+    
+    <gap:splash src="res/screen/ios_640_1136.png" gap:platform="ios" width="640" height="1136" /> <!-- iPhone 5, iPod Touch 5 -->
+    <gap:splash src="res/screen/ios_2048_1496.png" gap:platform="ios" width="2048" height="1496" /> <!-- iPad 3, 4 -->
+    <gap:splash src="res/screen/ios_1536_2008.png" gap:platform="ios" width="1536" height="2008" /> <!-- iPad 3, 4 -->
+
     
 </widget>

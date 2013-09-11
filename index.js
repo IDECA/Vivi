@@ -1033,15 +1033,15 @@ function enviar_msg() {
 
     var msgURL;
     if ($('#fopcion')[0].value == "oferta") {
-        msgURL = _url_msg + '?categoria=' + $('#fopcion')[0].value + '&Descripcion=' + $('#fdescripcion')[0].value
+        msgURL = _url_msg + '?' + 'categoria=' + $('#fopcion')[0].value + '&Descripcion=' + encodeURIComponent($('#fdescripcion')[0].value)
                       + '&Latitud=' + currentPoint.x + '&Longitud=' + currentPoint.y + photoMSG
-                      + '&Tipo=' + $('#ftipo')[0].value + '&Valor=' + $('#fvalor')[0].value
-                      + '&Telefono=' + $('#ftelefono')[0].value + '&Direccion=' + $('#fdireccion')[0].value
-                      + '&Correo=' + $('#fcorreo')[0].value;
+                      + '&Tipo=' + $('#ftipo')[0].value + '&Valor=' + encodeURIComponent($('#fvalor')[0].value)
+                      + '&Telefono=' + encodeURIComponent($('#ftelefono')[0].value) + '&Direccion=' + encodeURIComponent($('#fdireccion')[0].value)
+                      + '&Correo=' + encodeURIComponent($('#fcorreo')[0].value);
     } else {
-        msgURL = _url_msg + '?categoria=' + $('#fopcion')[0].value + '&Descripcion=' + $('#fdescripcion')[0].value
+        msgURL = _url_msg + '?categoria=' + $('#fopcion')[0].value + '&Descripcion=' + encodeURIComponent($('#fdescripcion')[0].value)
                       + '&Latitud=' + currentPoint.x + '&Longitud=' + currentPoint.y + photoMSG
-                      + '&Correo=' + $('#fcorreo')[0].value;
+                      + '&Correo=' + encodeURIComponent($('#fcorreo')[0].value);
     };
 
     $('#reportar').popup('close');
