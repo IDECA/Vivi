@@ -4,14 +4,14 @@ PARAMETROS CONFIGURABLES
 
 */
 // Ubicación de la versión web de la aplicación
-var _url = 'http://aztemp.cloudapp.net/vivi/vivi/';
+var _url = 'http://idecabogota.appspot.com/';
 // Mensaje que aparece en la opcion compartir desde redes sociales
 var _msg_share = 'Encontré este lugar en la aplicación Tu Bogotá';
 // Web service empleado para cargar fotos por parte de los usuarios
-var _url_photo = 'http://aztemp.cloudapp.net/vivi/upload_test.jsp';
+var _url_photo = 'http://idecabogota.appspot.com/upload_test.jsp';
 // Web service empleado para realizar reporte de necesidades por parte de los usuarios
-var _url_msg = 'http://aztemp.cloudapp.net/vivi/tmp.jsp?http://idecabogota.appspot.com/test.jsp';
-var _proxy_url = 'http://aztemp.cloudapp.net/vivi/tmp.jsp';
+var _url_msg = 'http://idecabogota.appspot.com/test.jsp';
+var _proxy_url = 'http://idecabogota.appspot.com/tmp.jsp';
 var _geometry_url = 'http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer';
 var _map_url = 'http://imagenes.catastrobogota.gov.co/arcgis/rest/services/CM/CommunityMap/MapServer';
 // Variables a desplejar
@@ -166,13 +166,13 @@ function init() {
                 $('#tutorial').popup('close');
                 $('#msg').popup('close');
                 $('#msg2').popup('close');
-                $('#popupGeneral').popup('close');                
+                $('#popupGeneral').popup('close');
             } else {
                 navigator.app.exitApp();
             };
         }, true);
     }
-    
+
     updateSize();
 
     if (getUrlVars()["pos"] == null) {
@@ -265,7 +265,7 @@ function cerrarPopup() {
 };
 
 function share(id) {
-    switch (id){
+    switch (id) {
         case 'facebook':
             window.open(encodeURI('http://www.facebook.com/sharer.php?t=' + _msg_share + '&u=' + _url + '?pos=' + currentPoint.x + 'A' + currentPoint.y), '_blank', '');
             break;
@@ -291,7 +291,7 @@ function mapLoadHandler(map) {
     gl.setRenderer(sr);
     map.addLayer(gl, 0);
 
-    for (var i=0; i<variables.length;i++){		    			
+    for (var i = 0; i < variables.length; i++) {
         var glT = new esri.layers.GraphicsLayer();
         map.addLayer(glT, 1);
         glT.setVisibility(false);
@@ -321,7 +321,7 @@ function zoomToLocation(position) {
         currentPoint = new esri.geometry.Point(position.coords.longitude, position.coords.latitude, map.spatialReference);
         map.centerAndZoom(currentPoint, 5);
     } catch (ex) {
-       
+
     }
 };
 
@@ -357,7 +357,7 @@ function mapClickHandler(evt) {
 
     for (var i = 0; i < variables.length; i++) {
         capas[i].clear();
-        capas[i].setVisibility(false);        
+        capas[i].setVisibility(false);
     };
 
     var mapPoint;
@@ -377,10 +377,10 @@ function mapClickHandler(evt) {
     params.outSpatialReference = map.spatialReference;
 
     gsvc.buffer(params, showBuffer);
- 
+
     var params1 = new esri.tasks.BufferParameters();
     params1.geometries = [evt.mapPoint];
-    params1.distances = [Math.sqrt(radius*radius + radius*radius)/2];
+    params1.distances = [Math.sqrt(radius * radius + radius * radius) / 2];
     params1.unit = esri.tasks.GeometryService.UNIT_KILOMETER;
     params1.outSpatialReference = map.spatialReference;
 
@@ -405,7 +405,7 @@ function showBuffer(geometries) {
 };
 
 function showBuffer2(geometries) {
-    
+
     dojo.forEach(geometries, function (geometry) {
         currentExtent = geometry;
         for (var i = 0; i < variables.length; i++) {
@@ -431,7 +431,7 @@ function showBuffer2(geometries) {
             identifyParams.width = 16000;
             identifyParams.height = 16000;
             identifyParams.dpi = 96;
-            switch (i){
+            switch (i) {
                 case 0:
                     identifyTask.execute(identifyParams, function (results) {
                         showResults(results, 0);
@@ -544,7 +544,7 @@ function showBuffer2(geometries) {
                             if ((results[i].feature.geometry.type == 'polygon') || (results[i].feature.geometry.type == 'polyline')) {
                                 geomTEST.push(results[i].feature.geometry);
                             };
-                        }                        
+                        }
                         gsvc.intersect(geomTEST, bufferCache,
                         function (geometries) {
                             var posN = 0;
@@ -559,7 +559,7 @@ function showBuffer2(geometries) {
                         function (error) {
                             showResults(cacheRiesgo, 11);
                         });
-                        
+
                     }, function (error) {
                         $("#Value" + 11).html("<img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' /><img src='images/star_off.png' />");
                     });
@@ -752,14 +752,14 @@ function showResults(results, pos) {
                     break;
             }
         } catch (e) {
-            
+
         };
         content = content + "<br /><a href='#' onclick='cerrarPopup();' style=''>Cerrar</a>";
         var popcontent;
         if (value.length > 40) {
             value = value.substr(0, 40) + "...";
         }
-        if (value == "N/A"){
+        if (value == "N/A") {
             popcontent = null;
         } else {
             popcontent = new esri.InfoTemplate(value, content)
@@ -815,12 +815,12 @@ function showResults(results, pos) {
             if (nm2 == 0) {
                 m2 = m2 + parseInt(results[0].feature.attributes["Valor metro cuadrado"].replace("$", "").replace(".", "").replace(",", "").replace(".", ""));
                 nm2++;
-            }            
+            }
         }
     }
 
     if (pos == 0) {
-        if (nm2 == 0){
+        if (nm2 == 0) {
             str = "ND";
         } else {
             str = "$ " + parseInt(m2 / nm2);
@@ -901,10 +901,10 @@ function captureSuccess(imageURI) {
     $('#msgTXT2').html('Cargando foto, por favor, espere.');
     $('#msg2').popup('open');
 
-    var fail, ft, options, params, win;    
+    var fail, ft, options, params, win;
     options = new FileUploadOptions();
     options.fileKey = "nva_imagen";
-    options.fileName = "imagen_" + new Date().getTime()  + ".jpg";
+    options.fileName = "imagen_" + new Date().getTime() + ".jpg";
     ft = new FileTransfer();
     ft.upload(imageURI, _url_photo, uploadSuccessFT, uploadFail, options);
 };
@@ -936,7 +936,7 @@ function captureFail(message) {
 
 function uploadSuccess(response) {
     var objResponse;
-    objResponse = response;
+    objResponse = JSON.parse(response);
     $('#reportar').popup('close');
     if (objResponse.message == null) {
         $('#msgTXT2').html('Foto cargada exitosamente.');
