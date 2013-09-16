@@ -1,0 +1,325 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Tu Bogotá</title>
+	
+    <meta property="og:title" content="Tu Bogotá" />
+    <meta property="og:description" content="Encontré este lugar en la aplicación Tu Bogotá" />
+    <meta property="og:image" content="http://commondatastorage.googleapis.com/sinesat/icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+    <link href="css/jquery.mobile-1.3.2.min.css" rel="stylesheet" />
+    <link href="css/jquery.mobile.structure-1.3.2.min.css" rel="stylesheet" />
+    <link href="css/jquery.mobile.theme-1.3.2.min.css" rel="stylesheet" />
+    <link href="css/themes/mintic.css" rel="stylesheet" />
+    <link href="jqm-icon-pack-2.0-original.css" rel="stylesheet" />
+
+	<script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.mobile-1.3.2.min.js"></script>
+    <script src="js/jquery.form.min.js"></script>
+    <script src="js/json2.js"></script>
+    <script src="js/jquery.validity.js"></script>
+
+    <script src="http://js.arcgis.com/3.6compact/"></script>
+    <link rel="stylesheet" href="http://js.arcgis.com/3.6compact/js/dojo/dijit/themes/claro/claro.css" />
+    <link rel="stylesheet" href="http://js.arcgis.com/3.6compact/js/esri/css/esri.css"/>
+
+    <script src="phonegap.js"></script>
+    <script src="index.js"></script>
+
+    <style>
+        .simpleInfoWindow .close
+        {
+            display: none;
+        }
+
+        .ui-popup-screen.in {
+            background: none repeat scroll 0 0 grey;
+            opacity: 0.5;
+            z-index: 100;
+        }
+
+        body
+        {
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+
+	<script>
+
+	    if (isPhoneGapExclusive()) {
+	        document.addEventListener("deviceready", onDeviceReady, false);
+	        window.addEventListener('resize', updateSize);
+
+	        function onDeviceReady() {
+	            navigator.geolocation.getCurrentPosition(zoomToLocation, null);
+	            try {
+	                dojo.require("esri.map");
+	                dojo.require("esri.graphic");
+	                dojo.require("esri.tasks.geometry");
+	                dojo.require("esri.tasks.identify");
+	                dojo.require("esri.dijit.InfoWindowLite");
+	                dojo.addOnLoad(init);
+	            } catch (err) {
+	                init();
+	            };
+	        }
+	    } else {
+	        window.addEventListener('resize', updateSize);
+
+	        navigator.geolocation.getCurrentPosition(zoomToLocation, null);
+	        try {
+	            dojo.require("esri.map");
+	            dojo.require("esri.graphic");
+	            dojo.require("esri.tasks.geometry");
+	            dojo.require("esri.tasks.identify");
+	            dojo.require("esri.dijit.InfoWindowLite");
+	            dojo.addOnLoad(init);
+	        } catch (err) {
+	            init();
+	        };
+	    };
+
+    </script>
+
+ </head>
+<body>
+
+    <div data-role="page" id="main" style="width:100%; height:100%; padding:0;">
+
+	    <div id="header" data-role="header">
+            <a href="#" data-role="button" data-icon="star" onclick="displayLista();">Variables</a>
+            <h1>&nbsp;</h1>
+            <div class="ui-btn-right" data-role="controlgroup" data-type="horizontal">
+                <a href="#" data-role="button" data-icon="alert" data-iconpos="notext" onclick="$('#reportar').popup('open');initReporte();"></a>
+                <a href="#" data-role="button" data-icon="link" data-iconpos="notext" onclick="$('#share').popup('open');"></a>
+                <a href="#" data-role="button" data-icon="gear" data-iconpos="notext" onclick="$('#configuracion').popup('open');"></a>
+                <a href="#" data-role="button" data-icon="info2" data-iconpos="notext" onclick="$('#acerca').popup('open');"></a>
+            </div>
+	    </div><!-- /header -->
+
+
+	    <div id="container" data-role="content" style="width:100%; height:100%; padding:0;">
+
+
+            <div data-role="popup" id="acerca" data-history="false">
+	            <div data-role="header">
+                    <a href="#main" data-role="button" data-icon="arrow-l">Volver</a>
+		            <h1>Tu Bogotá</h1>
+                    <a href="#" data-role="button"  onclick="$('#acerca').popup('close');$('#tutorial').popup('open');">Tutorial</a>
+	            </div>
+	            <div data-role="content">
+                   <p style="text-align: center;">
+                       <span style="font-size: large;"><b>Tu Bogotá v1.0</b></span><br />
+                       IDECA - Infraestructura de Datos Espaciales para el Distrito Capital<br />
+                       2013 - Derechos Reservados
+                   </p>
+		            <p style="text-align: center;">
+                        <img style="width: auto; height: auto; max-width: 100%; max-height: 100%;" src="images/logo_catastro.png" />&nbsp;
+                        <img style="width: auto; height: auto; max-width: 100%; max-height: 100%;" src="images/logo_IDECA.png" />&nbsp;
+                        <img style="width: auto; height: auto; max-width: 100%; max-height: 100%;" src="images/logo_mintic.png" />
+                    </p>
+                   <p style="text-align: center;">
+                        <b>Autores:</b><br />
+                        David H. Bello - Raphcel M. Bello<br />
+                        david.bello@sinesat.com
+                   </p>
+	            </div>
+            </div>
+
+            <div data-role="popup" id="tutorial" data-history="false">
+	            <div data-role="header">
+                    <a href="#main" data-role="button" data-icon="arrow-l">Volver</a>
+		            <h1>Tu Bogotá</h1>
+	            </div>
+	            <div data-role="content" style="text-align: justify;font-size: small;">
+                   <p>
+                       Para utilizar la aplicación solamente debes hacer doble tap sobre el mapa, pero también puedes utilizar cualquiera de los siguientes botones ubicado en la barra superior:
+                   </p>
+                    <br />
+                   <center>
+                   <table cellpadding="5" style="border-collapse: collapse;">
+                        <tr>
+                            <td style="border: none;">
+                                <a href="#" data-role="button" data-inline="true" data-mini="true" data-icon="star">Variables</a>
+                            </td>
+                            <td style="border: none;">
+                                Oculta y despliega el listado de variables.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: none;">
+                                <a href="#" data-role="button" data-inline="true" data-mini="true" data-icon="alert">Reportar</a>
+                            </td>
+                            <td style="border: none;">
+                                Realiza un reporte de necesidades (educación, salud, entre otras).
+                            </td>
+                        </tr>
+                        <tr>                            
+                            <td style="border: none;">
+                                <a href="#" data-role="button" data-inline="true" data-mini="true" data-icon="link">Compartir</a>
+                            </td>
+                            <td style="border: none;">
+                                Compartir mediante Facebook y Twitter el punto seleccionado en el mapa.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: none;">
+                                <a href="#" data-role="button" data-inline="true" data-mini="true" data-icon="gear">Configuración</a>
+                            </td>
+                            <td style="border: none;">
+                                Modifica el radio de busqueda para el punto seleccionado.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: none;">
+                                <a href="#" data-role="button" data-inline="true" data-mini="true" data-icon="info2">Acerca de</a>
+                            </td>
+                            <td style="border: none;">
+                                Ver la información de los autores e ingresar nuevamente a este tutorial.
+                            </td>
+                        </tr>
+                    </table>
+                    </center>
+	            </div>
+            </div>
+
+            <div data-role="popup" id="share" data-history="false">
+	            <div data-role="header">
+                    <a href="#main" data-role="button" data-icon="arrow-l">Volver</a>
+		            <h1>Tu Bogotá</h1>
+	            </div>
+	            <div data-role="content">
+                   <p style="text-align: center;">Compartir ubicación por:</p>
+                    <div data-role="controlgroup" data-type="horizontal">
+                        <a href="#" id="btnS1" data-role="button" data-icon="facebook" onclick="share('facebook');">Facebook</a>
+                        <a href="#" id="btnS2" data-role="button" data-icon="twitter" onclick="share('twitter');">Twitter</a>
+                        <!-- <a href="#" id="btnS3" data-role="button" data-icon="email" data-mini="true" onclick="share('email');">E-mail</a> -->
+                    </div>
+	            </div>
+            </div>
+
+            <div data-role="popup" id="configuracion" data-history="false">
+	            <div data-role="header">
+                    <a href="#main" data-role="button" data-icon="arrow-l">Volver</a>
+		            <h1>Tu Bogotá</h1>
+	            </div>
+	            <div data-role="content">
+                   <p style="text-align: center;">Radio de búsqueda:</p>
+                    <div data-role="controlgroup" data-type="horizontal">
+                        <a href="#" id="btn1" data-role="button" data-inline="true" data-mini="true" onclick="$('#btn1,#btn2,#btn4').removeClass('ui-btn-active');updateRadius(1);$('#btn1').addClass('ui-btn-active');">1 Km.</a>
+                        <a href="#" id="btn2" data-role="button" data-inline="true" data-mini="true" onclick="$('#btn1,#btn2,#btn4').removeClass('ui-btn-active');updateRadius(2);$('#btn2').addClass('ui-btn-active');" class="ui-btn-active">2 Kms.</a>
+                        <a href="#" id="btn4" data-role="button" data-inline="true" data-mini="true" onclick="$('#btn1,#btn2,#btn4').removeClass('ui-btn-active');updateRadius(4);$('#btn4').addClass('ui-btn-active');">4 Kms.</a>
+                    </div>
+	            </div>
+            </div>
+
+            <div data-role="popup" id="msg" data-history="false">
+	            <div data-role="header">
+                    <a href="#main" data-role="button" data-icon="arrow-l">Volver</a>
+		            <h1>Tu Bogotá</h1>
+	            </div>
+	            <div data-role="content">
+                    <div id="msgTXT"></div>
+                </div>
+            </div>
+
+            <div data-role="popup" id="msg2" data-history="false">
+	            <div data-role="header">
+                    <a href="#" data-role="button" data-icon="arrow-l" onclick="$('#msg2').popup('close');$('#reportar').popup('open');">Volver</a>
+		            <h1>Tu Bogotá</h1>
+	            </div>
+	            <div data-role="content">
+                    <div id="msgTXT2"></div>
+                </div>
+            </div>
+
+            <div data-role="popup" id="reportar" data-history="false">
+	            <div data-role="header">
+                    <a href="#main" data-role="button" data-icon="arrow-l">Volver</a>
+		            <h1>Tu Bogotá</h1>
+	            </div>
+	            <div data-role="content">
+                    <div data-role="fieldcontain">
+                        <label for="fopcion" class="select">Tipo de Necesidad:</label>
+                        <select id="fopcion">
+                            <option value="oferta">Oferta Inmobiliaria</option>
+                            <option value="salud">Salud</option>
+                            <option value="educacion">Educación</option>
+                            <option value="cultura">Cultura</option>
+                            <option value="comercio">Comercio</option>
+                            <option value="turismo">Turismo</option>
+                            <option value="seguridad">Seguridad</option>
+                            <option value="social">Social</option>
+                            <option value="riesgo">Riesgo</option>
+                            <option value="movilidad">Movilidad</option>
+                            <option value="ambiente">Ambiente</option>
+                            <option value="espacio">Espacio Público</option>
+                        </select>
+                    </div>
+                    <textarea id="fdescripcion" rows="4" cols="25" placeholder="Descripción"></textarea>
+                    <div>
+                        <p id="ffield" style="text-align: center;">Foto: 0</p>
+                        <div id="fphoto">
+                            <div style="text-align: center;" data-role="controlgroup" data-type="horizontal">
+                                <a href="#" data-role="button" data-inline="true" data-mini="true" onclick="capture(Camera.PictureSourceType.SAVEDPHOTOALBUM);">Existente</a>
+                                <a href="#" data-role="button" data-inline="true" data-mini="true" onclick="capture(Camera.PictureSourceType.CAMERA);">Desde la camara</a>
+                            </div>
+                        </div>
+                        <div id="fphotoweb">
+                            <form id="photoweb">
+                                <input type="file" name="nva_imagen" id="nva_imagen" />
+                            </form>
+                            <button onclick="cargarFoto();">Cargar</button>
+                        </div>
+                    </div>
+                    <div id="foferta">
+                        <div data-role="fieldcontain">
+                            <label for="ftipo" class="select">Tipo de Oferta:</label>
+                            <select id="ftipo">
+                                <option value="arriendo">Arriendo</option>
+                                <option value="venta">Venta</option>
+                            </select>
+                        </div>
+                        <input type="text" id="fvalor" placeholder="Valor" />
+                        <input type="text" id="ftelefono" placeholder="Teléfono"/>
+                        <input type="text" id="fdireccion" placeholder="Dirección" />
+                    </div>
+                    <input type="text" id="fcorreo" placeholder="Correo electrónico" />
+                    <a href="#" data-role="button" onclick="enviar_msg();">Enviar</a>
+	            </div>
+            </div>
+
+
+            <div data-role="popup" id="popupGeneral" data-history="false">
+			        <div data-role="header">
+				        <h1>Tu Bogotá</h1>
+                        <a href="#" data-role="button"  onclick="$('#popupGeneral').popup('close');$('#tutorial').popup('open');" class="ui-btn-right">Tutorial</a>
+			        </div>
+			        <div data-role="content">
+				        <p>Escoja un punto en el mapa y haga un doble tap para ver la informaci&oacute;n del sitio.</p><br />
+				        <a href="#main" data-role="button">Continuar</a>
+			        </div>
+		    </div>
+             <div id="map" style="padding: 0px;width:100%;height:100%;">
+
+		    </div>     
+	    </div>
+
+        <div id="footer" data-role="footer" data-position="fixed"> 
+
+	         <div id="lista" style="font-size: small;position: absolute;width:100%;bottom:0px;padding: 0;overflow:auto;z-index:100;display:none;text-shadow:none;color:gray;">
+                <table id="table" style="width:100%;border-collapse: collapse;">
+
+
+                </table>
+            </div>
+        </div>
+
+    </div><!-- /page -->
+
+</body>
+</html>
