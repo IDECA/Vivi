@@ -23,7 +23,7 @@ var variables = [
     "Cultural",
     "Comercial",
     "Salud",
-    "Educación",
+    "Educaci&oacute;n",
     "Seguridad",
     "Servicios Sociales",
     "Movilidad",
@@ -518,6 +518,10 @@ function showBuffer2(geometries) {
                                 geomTEST.push(results[i].feature.geometry);
                             };
                         }
+                        if (geomTEST.length == 0) {
+                            showResults(cacheMovilidad, 10);
+                            return;
+                        };
                         gsvc.intersect(geomTEST, bufferCache,
                         function (geometries) {
                             var posN = 0;
@@ -545,6 +549,10 @@ function showBuffer2(geometries) {
                                 geomTEST.push(results[i].feature.geometry);
                             };
                         }
+                        if (geomTEST.length == 0) {
+                            showResults(cacheRiesgo, 11);
+                            return;
+                        };
                         gsvc.intersect(geomTEST, bufferCache,
                         function (geometries) {
                             var posN = 0;
