@@ -1,11 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Tu Bogotá</title>
-
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta property="og:title" content="Tu Bogotá" />
-    <meta property="og:description" content="Encontré este lugar en la aplicación Tu Bogotá" />
+    <title>Tu Bogot�</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <meta property="og:title" content="Tu Bogot�" />
+    <meta property="og:description" content="Encontr� este lugar en la aplicaci�n Tu Bogot�" />
     <meta property="og:image" content="http://commondatastorage.googleapis.com/sinesat/icon.png" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -22,12 +21,12 @@
     <script src="js/json2.js"></script>
     <script src="js/jquery.validity.js"></script>
 
+    <script src="phonegap.js"></script>
+    <script src="index.js"></script>
+
     <script src="js/3.6compact/init.js"></script>
     <link rel="stylesheet" href="js/3.6compact/js/dojo/dijit/themes/claro/claro.css" />
     <link rel="stylesheet" href="js/3.6compact/js/esri/css/esri.css"/>
-
-    <script src="phonegap.js"></script>
-    <script src="index.js"></script>
 
     <style>
         .simpleInfoWindow .close
@@ -109,12 +108,12 @@
             <div data-role="popup" id="acerca" data-history="false">
 	            <div data-role="header">
                     <a href="#main" data-role="button" data-icon="arrow-l">Volver</a>
-		            <h1>Tu Bogotá</h1>
+		            <h1>Tu Bogot&aacute;</h1>
                     <a href="#" data-role="button"  onclick="$('#acerca').popup('close');$('#tutorial').popup('open');">Tutorial</a>
 	            </div>
 	            <div data-role="content">
                    <p style="text-align: center;">
-                       <span style="font-size: large;"><b>Tu Bogotá v1.0</b></span><br />
+                       <span style="font-size: large;"><b>Tu Bogot&aacute; v1.0</b></span><br />
                        IDECA - Infraestructura de Datos Espaciales para el Distrito Capital<br />
                        2013 - Derechos Reservados
                    </p>
@@ -134,11 +133,11 @@
             <div data-role="popup" id="tutorial" data-history="false">
 	            <div data-role="header">
                     <a href="#main" data-role="button" data-icon="arrow-l">Volver</a>
-		            <h1>Tu Bogotá</h1>
+		            <h1>Tu Bogot&aacute;</h1>
 	            </div>
 	            <div data-role="content" style="text-align: justify;font-size: small;">
                    <p>
-                       Para utilizar la aplicación solamente debes hacer doble tap sobre el mapa y utilizar cualquiera de los siguientes botones ubicados en la barra superior:
+                       Para utilizar la aplicaci&oacute;n solamente debes hacer doble tap sobre el mapa y utilizar cualquiera de los siguientes botones ubicados en la barra superior:
                    </p>
                     <br />
                    <center>
@@ -148,7 +147,7 @@
                                 <a href="#" data-role="button" data-inline="true" data-mini="true" data-icon="star">Variables</a>
                             </td>
                             <td style="border: none;">
-                                Oculta y despliega el listado de temáticas a analizar.
+                                Oculta y despliega el listado de tem&aacute;ticas a analizar.
                             </td>
                         </tr>
                         <tr>
@@ -156,7 +155,7 @@
                                 <a href="#" data-role="button" data-inline="true" data-mini="true" data-icon="alert">Reportar</a>
                             </td>
                             <td style="border: none;">
-                                Permite reportar ofertas inmobiliarias y necesidades ciudadanas con respecto a los diferentes  sectores de la ciudad (salud, educación, ambiente, etc).
+                                Permite reportar ofertas inmobiliarias y necesidades ciudadanas con respecto a los diferentes  sectores de la ciudad (salud, educaci&oacute;n, ambiente, etc).
                             </td>
                         </tr>
                         <tr>                            
@@ -169,7 +168,7 @@
                         </tr>
                         <tr>
                             <td style="border: none;">
-                                <a href="#" data-role="button" data-inline="true" data-mini="true" data-icon="gear">Configuración</a>
+                                <a href="#" data-role="button" data-inline="true" data-mini="true" data-icon="gear">Configuraci&oacute;n</a>
                             </td>
                             <td style="border: none;">
                                 Modifica el radio de b&uacute;squeda para el punto seleccionado.
@@ -180,7 +179,7 @@
                                 <a href="#" data-role="button" data-inline="true" data-mini="true" data-icon="info2">Acerca de</a>
                             </td>
                             <td style="border: none;">
-                                Ver la información de los autores e ingresar nuevamente a este tutorial.
+                                Ver la informaci&oacute;n de los autores e ingresar nuevamente a este tutorial.
                             </td>
                         </tr>
                     </table>
@@ -191,10 +190,10 @@
             <div data-role="popup" id="share" data-history="false">
 	            <div data-role="header">
                     <a href="#main" data-role="button" data-icon="arrow-l">Volver</a>
-		            <h1>Tu Bogotá</h1>
+		            <h1>Tu Bogot&aacute;</h1>
 	            </div>
 	            <div data-role="content">
-                   <p style="text-align: center;">Compartir ubicación por:</p>
+                   <p style="text-align: center;">Compartir ubicaci&oacute;n por:</p>
                     <div data-role="controlgroup" data-type="horizontal">
                         <a href="#" id="btnS1" data-role="button" data-icon="facebook" onclick="share('facebook');">Facebook</a>
                         <a href="#" id="btnS2" data-role="button" data-icon="twitter" onclick="share('twitter');">Twitter</a>
@@ -206,7 +205,7 @@
             <div data-role="popup" id="configuracion" data-history="false">
 	            <div data-role="header">
                     <a href="#main" data-role="button" data-icon="arrow-l">Volver</a>
-		            <h1>Tu Bogotá</h1>
+		            <h1>Tu Bogot&aacute;</h1>
 	            </div>
 	            <div data-role="content">
                    <p style="text-align: center;">Radio de b&uacute;squeda:</p>
@@ -221,7 +220,7 @@
             <div data-role="popup" id="msg" data-history="false">
 	            <div data-role="header">
                     <a href="#main" data-role="button" data-icon="arrow-l">Volver</a>
-		            <h1>Tu Bogotá</h1>
+		            <h1>Tu Bogot&aacute;</h1>
 	            </div>
 	            <div data-role="content">
                     <div id="msgTXT"></div>
@@ -231,7 +230,7 @@
             <div data-role="popup" id="msg2" data-history="false">
 	            <div data-role="header">
                     <a href="#" data-role="button" data-icon="arrow-l" onclick="$('#msg2').popup('close');$('#reportar').popup('open');">Volver</a>
-		            <h1>Tu Bogotá</h1>
+		            <h1>Tu Bogot&aacute;</h1>
 	            </div>
 	            <div data-role="content">
                     <div id="msgTXT2"></div>
@@ -241,7 +240,7 @@
             <div data-role="popup" id="reportar" data-history="false">
 	            <div data-role="header">
                     <a href="#main" data-role="button" data-icon="arrow-l">Volver</a>
-		            <h1>Tu Bogotá</h1>
+		            <h1>Tu Bogot&aacute;</h1>
 	            </div>
 	            <div data-role="content">
                     <div data-role="fieldcontain">
@@ -249,7 +248,7 @@
                         <select id="fopcion">
                             <option value="oferta">Oferta Inmobiliaria</option>
                             <option value="salud">Salud</option>
-                            <option value="educacion">Educación</option>
+                            <option value="educacion">Educaci&oacute;n</option>
                             <option value="cultura">Cultura</option>
                             <option value="comercio">Comercio</option>
                             <option value="turismo">Turismo</option>
@@ -258,10 +257,10 @@
                             <option value="riesgo">Riesgo</option>
                             <option value="movilidad">Movilidad</option>
                             <option value="ambiente">Ambiente</option>
-                            <option value="espacio">Espacio Público</option>
+                            <option value="espacio">Espacio P&uacute;blico</option>
                         </select>
                     </div>
-                    <textarea id="fdescripcion" rows="4" cols="25" placeholder="Descripción"></textarea>
+                    <textarea id="fdescripcion" rows="4" cols="25" placeholder="Descripci&oacute;n"></textarea>
                     <div>
                         <p id="ffield" style="text-align: center;">Foto: 0</p>
                         <div id="fphoto">
@@ -286,10 +285,10 @@
                             </select>
                         </div>
                         <input type="text" id="fvalor" placeholder="Valor" />
-                        <input type="text" id="ftelefono" placeholder="Teléfono"/>
-                        <input type="text" id="fdireccion" placeholder="Dirección" />
+                        <input type="text" id="ftelefono" placeholder="Tel&eacute;fono"/>
+                        <input type="text" id="fdireccion" placeholder="Direcci&oacute;n" />
                     </div>
-                    <input type="text" id="fcorreo" placeholder="Correo electrónico" />
+                    <input type="text" id="fcorreo" placeholder="Correo electr&oacute;nico" />
                     <a href="#" data-role="button" onclick="enviar_msg();">Enviar</a>
 	            </div>
             </div>
@@ -297,7 +296,7 @@
 
             <div data-role="popup" id="popupGeneral" data-history="false">
 			        <div data-role="header">
-				        <h1>Tu Bogotá</h1>
+				        <h1>Tu Bogot&aacute;</h1>
                         <a href="#" data-role="button"  onclick="$('#popupGeneral').popup('close');$('#tutorial').popup('open');" class="ui-btn-right">Tutorial</a>
 			        </div>
 			        <div data-role="content">

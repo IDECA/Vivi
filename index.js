@@ -153,7 +153,7 @@ function init() {
     };
     if (isPhoneGapExclusive()) {
         if ((navigator.network.connection.type == Connection.UNKNOWN) || (navigator.network.connection.type == Connection.NONE)) {
-            $('#msgTXT').html('Tu Bogotá requiere una conexión de datos para funcionar correctamente. Por favor, verifique su configuración de red e intente nuevamente.');
+            $('#msgTXT').html('Tu Bogot&aacute; requiere una conexi&oacute;n de datos para funcionar correctamente. Por favor, verifique su configuraci&oacute;n de red e intente nuevamente.');
             $('#msg').popup('open');
             return;
         };
@@ -340,7 +340,7 @@ function showLayer(pos) {
 function mapClickHandler(evt) {
     if (isPhoneGapExclusive()) {
         if ((navigator.network.connection.type == Connection.UNKNOWN) || (navigator.network.connection.type == Connection.NONE)) {
-            $('#msgTXT').html('Tu Bogotá requiere una conexión de datos para funcionar correctamente. Por favor, verifique su configuración de red e intente nuevamente.');
+            $('#msgTXT').html('Tu Bogot&aacute; requiere una conexi&oacute;n de datos para funcionar correctamente. Por favor, verifique su configuraci&oacute;n de red e intente nuevamente.');
             $('#msg').popup('open');
             return;
         };
@@ -642,7 +642,7 @@ function showResults(results, pos) {
                         content = results[i].feature.attributes["Tipologia"];
                     } else {
                         value = results[i].feature.attributes["Nombre"];
-                        content = "Teléfono: " + results[i].feature.attributes["Telefono"];
+                        content = "Tel&eacute;fono: " + results[i].feature.attributes["Telefono"];
                     }
                     break;
                 case 3:
@@ -697,7 +697,7 @@ function showResults(results, pos) {
                     break;
                 case 8:
                     value = results[i].feature.attributes["Nombre"];
-                    content = "Teléfono: " + results[i].feature.attributes["Teléfono"];
+                    content = "Tel&eacute;fono: " + results[i].feature.attributes["Teléfono"];
                     break;
                 case 9:
                     value = results[i].feature.attributes["Nombre Unidad Operativa"];
@@ -705,16 +705,16 @@ function showResults(results, pos) {
                     break;
                 case 10:
                     if (results[i].layerId == 0) {
-                        value = "Estación Transmilenio";
+                        value = "Estaci&oacute;n Transmilenio";
                         content = "Nombre: " + results[i].feature.attributes["ESTANOM"] + "<br />Troncal: " + results[i].feature.attributes["ESTATRONCAL"];
                     }
                     if (results[i].layerId == 4) {
                         value = "Paraderos SITP";
-                        content = "Nombre: " + results[i].feature.attributes["PARNOMBRE"] + "<br />Dirección: " + results[i].feature.attributes["PARDIRBAN"];
+                        content = "Nombre: " + results[i].feature.attributes["PARNOMBRE"] + "<br />Direcci&oacute;n: " + results[i].feature.attributes["PARDIRBAN"];
                     }
                     if (results[i].layerId == 5) {
                         value = "Rutas SITP";
-                        content = "Número de ruta: " + results[i].feature.attributes["RSITPRUTA"] + "<br />Origen – Destino: " + results[i].feature.attributes["RSITPDENO"];
+                        content = "N&uacute;mero de ruta: " + results[i].feature.attributes["RSITPRUTA"] + "<br />Origen - Destino: " + results[i].feature.attributes["RSITPDENO"];
                     }
                     if (results[i].layerId == 6) {
                         value = "Troncal: " + results[i].feature.attributes["TRONCOD"];
@@ -726,7 +726,7 @@ function showResults(results, pos) {
                     }
                     if (results[i].layerId == 8) {
                         value = "Ruta de bus";
-                        content = "Número de ruta: " + results[i].feature.attributes["Número de la ruta"] + "<br />Origen – Destino: " + results[i].feature.attributes["Origen - Destino"];
+                        content = "N&uacute;mero de ruta: " + results[i].feature.attributes["Número de la ruta"] + "<br />Origen - Destino: " + results[i].feature.attributes["Origen - Destino"];
                     }
                     if (results[i].layerId == 10) {
                         value = results[i].feature.attributes["NOM_VIAL"];
@@ -736,15 +736,15 @@ function showResults(results, pos) {
                     break;
                 case 11:
                     if (results[i].layerId == 0) {
-                        value = "Riesgo de Inundación";
+                        value = "Riesgo de Inundaci&oacute;n";
                         content = "&nbsp;";
                     }
                     if (results[i].layerId == 1) {
-                        value = "Riesgo Tecnológico";
+                        value = "Riesgo Tecnol&oacute;gico";
                         content = "Empresa: " + results[i].feature.attributes["Razón social"];
                     }
                     if (results[i].layerId == 2) {
-                        value = "Riesgo de Remoción";
+                        value = "Riesgo de Remoci&oacute;n";
                         content = "&nbsp;";
                     }
                     if (results[i].layerId == 3) {
@@ -756,11 +756,11 @@ function showResults(results, pos) {
                 case 12:
                     value = results[i].feature.attributes["Tipo de oferta"];
                     content = results[i].feature.attributes["Valor en pesos"] + "<br />" +
-                              "Teléfono: " + results[i].feature.attributes["Teléfono"];
+                              "Tel&eacute;fono: " + results[i].feature.attributes["Teléfono"];
                     break;
             }
         } catch (e) {
-
+            alert(e);
         };
         content = content + "<br /><a href='#' onclick='cerrarPopup();' style=''>Cerrar</a>";
         var popcontent;
@@ -938,7 +938,7 @@ function cargarFoto() {
 };
 
 function captureFail(message) {
-    $('#msgTXT2').html('No se pudo capturar la foto, por favor, intente más tarde.');
+    $('#msgTXT2').html('No se pudo capturar la foto, por favor, intente m&aacute;s tarde.');
     $('#msg2').popup('open');
 };
 
@@ -951,7 +951,7 @@ function uploadSuccess(response) {
         photoURLS.push(objResponse.url);
         $('#ffield').html('Foto: ' + photoURLS.length);
     } else {
-        $('#msgTXT2').html('No se pudo cargar la foto. Razón: ' + objResponse.message);
+        $('#msgTXT2').html('No se pudo cargar la foto. Raz&oacute;n: ' + objResponse.message);
     }
     $('#msg2').popup('open');
 };
@@ -965,14 +965,14 @@ function uploadSuccessFT(response) {
         photoURLS.push(objResponse.url);
         $('#ffield').html('Foto: ' + photoURLS.length);
     } else {
-        $('#msgTXT2').html('No se pudo cargar la foto. Razón: ' + objResponse.message);
+        $('#msgTXT2').html('No se pudo cargar la foto. Raz&oacute;n: ' + objResponse.message);
     }
     $('#msg2').popup('open');
 };
 
 function uploadFail(error) {
     $('#reportar').popup('close');
-    $('#msgTXT2').html('No se pudo cargar la foto, por favor, intente más tarde.');
+    $('#msgTXT2').html('No se pudo cargar la foto, por favor, intente m&aacute;s tarde.');
     $('#msg2').popup('open');
 };
 
@@ -995,7 +995,7 @@ function enviar_msg() {
         $("#fcorreo").match("email");
         if ($.validity.end().errors > 0) {
             $('#reportar').popup('close');
-            $('#msgTXT2').html('Debe ingresar un correo electrónico válido.');
+            $('#msgTXT2').html('Debe ingresar un correo electr&oacute;nico v&aacute;lido.');
             $('#msg2').popup('open');
             return;
         };
@@ -1003,7 +1003,7 @@ function enviar_msg() {
         $("#fvalor").match("integer");
         if ($.validity.end().errors > 0) {
             $('#reportar').popup('close');
-            $('#msgTXT2').html('Debe ingresar un valor válido, sin incluir signos ni puntos.');
+            $('#msgTXT2').html('Debe ingresar un valor v&aacute;lido, sin incluir signos ni puntos.');
             $('#msg2').popup('open');
             return;
         };
@@ -1024,7 +1024,7 @@ function enviar_msg() {
         $("#fcorreo").match("email");
         if ($.validity.end().errors > 0) {
             $('#reportar').popup('close');
-            $('#msgTXT2').html('Debe ingresar un correo electrónico válido.');
+            $('#msgTXT2').html('Debe ingresar un correo electr&oacute;nico v&aacute;lido.');
             $('#msg2').popup('open');
             return;
         };
@@ -1064,7 +1064,7 @@ function enviar_msg() {
             $('#msg').popup('open');
         },
         error: function () {
-            $('#msgTXT2').html('No se pudo enviar el reporte, por favor, intente más tarde.');
+            $('#msgTXT2').html('No se pudo enviar el reporte, por favor, intente m&aacute;s tarde.');
             $('#msg2').popup('open');
         }
     });
