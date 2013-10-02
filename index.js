@@ -99,7 +99,7 @@ var layers = [
         [0]
 ];
 // Radio de búsqueda (por defecto)
-var radius = 2;
+var radius = 1;
 
 var valoraciones = [
     0,

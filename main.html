@@ -24,9 +24,14 @@
     <script src="phonegap.js"></script>
     <script src="index.js"></script>
 
-    <script src="js/3.6compact/init.js"></script>
+    <!-- <script src="js/3.6compact/init.js"></script>
     <link rel="stylesheet" href="js/3.6compact/js/dojo/dijit/themes/claro/claro.css" />
-    <link rel="stylesheet" href="js/3.6compact/js/esri/css/esri.css"/>
+    <link rel="stylesheet" href="js/3.6compact/js/esri/css/esri.css"/> -->
+
+    <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/dojo/dijit/themes/claro/claro.css" />
+    <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/esri/css/esri.css" />
+    <script src="http://js.arcgis.com/3.7/"></script>
+
 
     <style>
         .simpleInfoWindow .close
@@ -210,9 +215,9 @@
 	            <div data-role="content">
                    <p style="text-align: center;">Radio de b&uacute;squeda:</p>
                     <div data-role="controlgroup" data-type="horizontal">
-                        <a href="#" id="btn1" data-role="button" data-inline="true" data-mini="true" onclick="$('#btn1,#btn2,#btn4').removeClass('ui-btn-active');updateRadius(1);$('#btn1').addClass('ui-btn-active');">1 Km.</a>
-                        <a href="#" id="btn2" data-role="button" data-inline="true" data-mini="true" onclick="$('#btn1,#btn2,#btn4').removeClass('ui-btn-active');updateRadius(2);$('#btn2').addClass('ui-btn-active');" class="ui-btn-active">2 Kms.</a>
-                        <a href="#" id="btn4" data-role="button" data-inline="true" data-mini="true" onclick="$('#btn1,#btn2,#btn4').removeClass('ui-btn-active');updateRadius(4);$('#btn4').addClass('ui-btn-active');">4 Kms.</a>
+                        <a href="#" id="btn1" data-role="button" data-inline="true" data-mini="true" onclick="$('#btn1,#btn2,#btn4').removeClass('ui-btn-active');updateRadius(0.5);$('#btn1').addClass('ui-btn-active');">500 Mts.</a>
+                        <a href="#" id="btn2" data-role="button" data-inline="true" data-mini="true" onclick="$('#btn1,#btn2,#btn4').removeClass('ui-btn-active');updateRadius(1);$('#btn2').addClass('ui-btn-active');" class="ui-btn-active">1 Km.</a>
+                        <a href="#" id="btn4" data-role="button" data-inline="true" data-mini="true" onclick="$('#btn1,#btn2,#btn4').removeClass('ui-btn-active');updateRadius(2);$('#btn4').addClass('ui-btn-active');">2 Kms.</a>
                     </div>
 	            </div>
             </div>
