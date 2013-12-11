@@ -317,6 +317,10 @@ function zoomToLocation(position) {
     pLat = position.coords.latitude;
     pLng = position.coords.longitude;
 
+    if ((pLng < -75.58139209627889) || (pLng > -72.89593240509883) || (pLat < 3.7257132160042237) || (pLat > 5.866752229050312)) {
+        return;
+    }
+
     try {
         currentPoint = new esri.geometry.Point(position.coords.longitude, position.coords.latitude, map.spatialReference);
         map.centerAndZoom(currentPoint, 5);
@@ -345,6 +349,13 @@ function mapClickHandler(evt) {
             return;
         };
     }
+
+    if ((evt.mapPoint.x < -75.58139209627889) || (evt.mapPoint.x > -72.89593240509883) || (evt.mapPoint.y < 3.7257132160042237) || (evt.mapPoint.y > 5.866752229050312)) {
+        $('#msgTXT').html('El punto seleccionado esta fuera de la cobertura de Tu Bogot&aacute;. Por favor, seleccione un punto en Bogot&aacute;.');
+        $('#msg').popup('open');
+        return;
+    };
+
     if (mapLock) {
         return;
     };
